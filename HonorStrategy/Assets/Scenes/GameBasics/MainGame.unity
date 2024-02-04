@@ -244,8 +244,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba795b1549038b4484cb96f66ce10e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 7353535617660910775, guid: 33294fdad9698b642a79b15de82f8c5e, type: 3}
-  tile2: {fileID: 3533047844140987320, guid: 9e81711526b5a0f42b3588e9cd5dae3b, type: 3}
+  tile:
+  - {fileID: 3839053261555447607, guid: be71ca55f834016418cf372a25b0fa1c, type: 3}
+  - {fileID: 362687585380481240, guid: 20bd29418ccd6f74686fa6797f2b7409, type: 3}
+  tile2: {fileID: 7353535617660910775, guid: 33294fdad9698b642a79b15de82f8c5e, type: 3}
   gridHeight: 12
   gridWidht: 12
   tileSize: 0.95
