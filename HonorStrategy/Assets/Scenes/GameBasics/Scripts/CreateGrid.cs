@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class CreateGrid : MonoBehaviour
 {
+    [SerializeField] Tilemap tilemap;
+    [SerializeField] Tile[] tiles;
 
-    [SerializeField] GameObject[] tile;
     [SerializeField] GameObject characterPlayer;
     [SerializeField] GameObject characterEnemy;
-    [SerializeField] int gridHeight = 10;
-    [SerializeField] int gridWidht = 10;
-    [SerializeField] float tileSize = 1f;
+
+    static public int gridHeight = 12;
+    static public int gridWidth = 12;
+    float tileSize = 1f;
 
     [SerializeField] int posPlayerX;
     [SerializeField] int posPlayerY;
@@ -23,17 +26,54 @@ public class CreateGrid : MonoBehaviour
         GenerateGrid();
     }
 
-    private void GenerateGrid(){
+private void GenerateGrid()
+    {
+        for (int x = (gridHeight * 2); x > 0; x--)
+        {
+            for (int y = 0; y < gridWidth; y++)
+            {
+                var randomTile = tiles[Random.Range(0, tiles.Length)];
+                tilemap.SetTile(new Vector3Int(x, y, 0), randomTile);
+            }
+        }
+
+        GameObject charPlayer = Instantiate(characterPlayer, transform);
+
+        float posCharX = (posPlayerX * tileSize + posPlayerY * tileSize) / 2f;
+        float posCharY = (posPlayerX * tileSize - posPlayerY * tileSize) / 4f;
+
+        Vector3Int playerCellPosition = tilemap.WorldToCell(new Vector3(posCharX, posCharY, 0));
+        Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(playerCellPosition);
+
+        charPlayer.transform.position = playerWorldPosition;
+        charPlayer.name = "player";
+
+        GameObject charEnemy = Instantiate(characterEnemy, transform);
+
+        posCharX = (posEnemyX * tileSize + posEnemyY * tileSize) / 2f;
+        posCharY = (posEnemyX * tileSize - posEnemyY * tileSize) / 4f;
+
+        charEnemy.transform.position = new Vector2(posCharX, posCharY);
+        charEnemy.name = "enemy";
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int gridPos = tilemap.WorldToCell(mousePos);
+
+            if (tilemap.HasTile(gridPos))
+                Debug.Log("Hello World from " + gridPos);
+        }
+    }
+}
+
+/*
         for (int x = (gridHeight * 2); x > 0; x--){
             for (int y = 0; y < gridWidht; y++){
-                /*
-                GameObject newTile;
-                if(x > gridHeight){
-                    newTile = Instantiate(tile2, transform);
-                } else{
-                    newTile = Instantiate(tile, transform);
-                }
-                */
+
                 var randomTile = tile[Random.Range(0, tile.Length)];
                 GameObject newTile = Instantiate(randomTile, transform);
                 
@@ -45,24 +85,27 @@ public class CreateGrid : MonoBehaviour
                 newTile.name = x + "," + y;
             }
         }
+*/
+/*
+GameObject charPlayer = Instantiate(characterPlayer, transform);
 
-        
-        GameObject charPlayer = Instantiate(characterPlayer, transform);
+float posCharX = (posPlayerX * tileSize + posPlayerY * tileSize) / 2f;
+float posCharY = (posPlayerX * tileSize - posPlayerY * tileSize) / 4f;
 
-        
-        float posCharX = (posPlayerX * tileSize + posPlayerY * tileSize) / 2f;
-        float posCharY = (posPlayerX * tileSize - posPlayerY * tileSize) / 4f;
-        
+Vector3Int playerCellPosition = tilemap.WorldToCell(new Vector3(posCharX, posCharY, 0));
+Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(playerCellPosition);
 
-        charPlayer.transform.position = new Vector2(posCharX, posCharY);
-        charPlayer.name = "player";
+charPlayer.transform.position = playerWorldPosition;
+charPlayer.name = "player";
 
-        GameObject charEnemy = Instantiate(characterEnemy, transform);
+GameObject charEnemy = Instantiate(characterEnemy, transform);
 
-        posCharX = (posEnemyX * tileSize + posEnemyY * tileSize) / 2f;
-        posCharY = (posEnemyX * tileSize - posEnemyY * tileSize) / 4f;
+posCharX = (posEnemyX * tileSize + posEnemyY * tileSize) / 2f;
+posCharY = (posEnemyX * tileSize - posEnemyY * tileSize) / 4f;
 
-        charEnemy.transform.position = new Vector2(posCharX, posCharY);
-        charEnemy.name = "enemy";
-    }
-}
+Vector3Int enemyCellPosition = tilemap.WorldToCell(new Vector3(posCharX, posCharY, 0));
+Vector3 enemyWorldPosition = tilemap.GetCellCenterWorld(enemyCellPosition);
+
+charEnemy.transform.position = enemyWorldPosition;
+charEnemy.name = "enemy";
+*/

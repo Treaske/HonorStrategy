@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 728c3503bea6c4f4986b4fbe5615fcb7
+guid: 891c9f836417cd6498e11c870622a854
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,43 +123,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SelectionTile_0
+      name: GreenTiles_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 57
-        width: 64
-        height: 32
+        x: 6
+        y: 36
+        width: 68
+        height: 55
       alignment: 9
-      pivot: {x: 0.49999994, y: 0.50650764}
+      pivot: {x: 0.5, y: 0.7}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7ff254caf52201c44a8c709d4721bab6
-      internalID: -990195948
+      spriteID: 642e3acb84fc0374db52184e2c3e7c99
+      internalID: -1622704811
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SelectionTile_1
+      name: GreenTiles_1
       rect:
         serializedVersion: 2
-        x: 78
-        y: 59
-        width: 64
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 76
+        y: 36
+        width: 68
+        height: 55
+      alignment: 9
+      pivot: {x: 0.5, y: 0.7}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ff153e32b909ce04c8a63ef631bf032e
-      internalID: -1075756697
+      spriteID: dff3286a7b310c54ebd3c1d3f740c937
+      internalID: -1295876873
       vertices: []
       indices: 
       edges: []
@@ -175,8 +175,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      SelectionTile_0: -990195948
-      SelectionTile_1: -1075756697
+      GreenTiles_0: -1622704811
+      GreenTiles_1: -1295876873
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
