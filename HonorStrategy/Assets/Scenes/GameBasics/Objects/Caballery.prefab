@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 5692849182846594043}
   - component: {fileID: 3579637359691863729}
   - component: {fileID: 5107450271893883810}
-  - component: {fileID: 7398030795237856437}
+  - component: {fileID: 8643162166929756542}
   m_Layer: 0
   m_Name: Caballery
-  m_TagString: Untagged
+  m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,7 +159,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &7398030795237856437
+--- !u!114 &8643162166929756542
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,11 +168,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7681669696623389386}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caab13df9a4d5e6428ee19828ac32668, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c74520a3960ea849ba0e7db775846d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  color: 0
+  health: 0
+  damage: 0
   sprites:
   - {fileID: -1917722276, guid: 6bca52c4c3a04694da52cc71de0c2480, type: 3}
   - {fileID: 602289152, guid: 6bca52c4c3a04694da52cc71de0c2480, type: 3}
   - {fileID: 284433143, guid: 6bca52c4c3a04694da52cc71de0c2480, type: 3}
-  charColor: 0
