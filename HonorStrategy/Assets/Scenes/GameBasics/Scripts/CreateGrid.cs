@@ -78,7 +78,7 @@ public class CreateGrid : MonoBehaviour
     void Update()
     {
         HandleCharacterSelection();
-        
+        HandleCharacterMovement();
     }
 
     void HandleCharacterSelection()
@@ -88,50 +88,23 @@ public class CreateGrid : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
             Vector3Int gridPos = tilemap.WorldToCell(mousePos);
+            Debug.Log("Hello World from mouse " + gridPos);
 
-            // Verificar si hay un personaje en la posición seleccionada
-            Collider2D hitCollider = Physics2D.OverlapPoint(mousePos);
-            if (hitCollider != null && hitCollider.CompareTag("Character"))
-            {
-               
-                // Seleccionar el nuevo personaje
-                selectedCharacter = posicionesOcupadas.FirstOrDefault(c => c.position == gridPos);
+            selectedCharacter = posicionesOcupadas.FirstOrDefault(c => c.position == gridPos);
+            Debug.Log("Hello World from mouse " + selectedCharacter.color);
 
-
+            if (selectedCharacter != null)
+            { 
                 Debug.Log("Hello World from " + gridPos);
-
-                if(selectedCharacter != null)
-                {
-                    Debug.Log("Hello World from " + selectedCharacter.color);
-                }
-
+                Debug.Log("Hello World from " + selectedCharacter.color);
                 // Aquí puedes realizar acciones adicionales cuando se selecciona un personaje
-                /*
-                if (Input.GetMouseButtonDown(1))
-                {
-                    Vector3 mousePosSelec = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    mousePosSelec.z = 0;
-                    Vector3Int targetGridPos = tilemap.WorldToCell(mousePosSelec);
-                    Debug.Log("Hello World from " + targetGridPos);
-
-                    // Mover el personaje a la nueva posición
-                    Vector3 targetWorldPos = tilemap.GetCellCenterWorld(targetGridPos);
-                    selectedCharacter.transform.position = targetWorldPos;
-
-                }
-                */
-
             }
-            else
-            {
-                // Desseleccionar el personaje si se hace clic fuera de los personajes
-                selectedCharacter = null;
-            }
+
         }
     }
-}
 
-/*
+
+
     void HandleCharacterMovement()
     {
         if (selectedCharacter != null)
@@ -143,11 +116,17 @@ public class CreateGrid : MonoBehaviour
                 Vector3Int targetGridPos = tilemap.WorldToCell(mousePos);
 
                 // Mover el personaje a la nueva posición
-                MoveCharacter(selectedCharacter, targetGridPos);
+                Vector3 targetWorldPos = tilemap.GetCellCenterWorld(targetGridPos);
+                selectedCharacter.transform.position = targetWorldPos;
+                posicionesOcupadas.Add(selectedCharacter);
+                Debug.Log("Hello World from " + targetWorldPos);
+                selectedCharacter = null;
+
             }
         }
     }
-
+}
+/*
     void MoveCharacter(GameObject character, Vector3Int targetGridPos)
     {
         // Realizar verificaciones adicionales si es necesario antes de mover
