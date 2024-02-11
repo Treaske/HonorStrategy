@@ -88,18 +88,26 @@ public class CreateGrid : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
             Vector3Int gridPos = tilemap.WorldToCell(mousePos);
-            Debug.Log("Hello World from mouse " + gridPos);
+            Debug.Log("Hello World from mouse " + gridPos.x);
 
-            selectedCharacter = posicionesOcupadas.FirstOrDefault(c => c.position == gridPos);
-            Debug.Log("Hello World from mouse " + selectedCharacter.color);
+            // Obtén todos los personajes en la posición x
+            List<CharInfo> characInColumn = posicionesOcupadas
+                .Where(c => c.position.y == gridPos.y)
+                .ToList();
 
-            if (selectedCharacter != null)
-            { 
-                Debug.Log("Hello World from " + gridPos);
-                Debug.Log("Hello World from " + selectedCharacter.color);
+                // Verifica si hay al menos un personaje en la fila
+            if (characInColumn.Count > 0)
+            {
+                // Obtén el último personaje de la fila
+                selectedCharacter = characInColumn.Last();
+                posicionesOcupadas.Remove(selectedCharacter);
                 // Aquí puedes realizar acciones adicionales cuando se selecciona un personaje
             }
 
+            Debug.Log("Personaje encontrado en la posición: " + selectedCharacter.position);
+            Debug.Log("Color del personaje encontrado: " + selectedCharacter.color);
+
+            // Aquí puedes realizar acciones adicionales cuando se selecciona un personaje
         }
     }
 
@@ -115,18 +123,66 @@ public class CreateGrid : MonoBehaviour
                 mousePos.z = 0;
                 Vector3Int targetGridPos = tilemap.WorldToCell(mousePos);
 
+                CharInfo lastCharacInColumn = posicionesOcupadas
+                .Where(c => c.position.y == targetGridPos.y)
+                .LastOrDefault();
+
+                Debug.Log("Último personaje encontrado posicion " + lastCharacInColumn.position);
+
+                Vector3Int lastCharacPosition;
+
+                if (lastCharacInColumn != null)
+                {
+                    lastCharacPosition = lastCharacInColumn.position;
+                    lastCharacPosition += new Vector3Int(1, 0, 0);;
+                    Debug.Log("Último personaje encontrado");
+                } else {
+                    lastCharacPosition = lastCharacInColumn.position;
+                    lastCharacPosition.x = 12;
+                    Debug.Log("Último personaje encontrado else");
+                }
+
+
                 // Mover el personaje a la nueva posición
-                Vector3 targetWorldPos = tilemap.GetCellCenterWorld(targetGridPos);
+                Vector3 targetWorldPos = tilemap.GetCellCenterWorld(lastCharacPosition);
+
+                selectedCharacter.position = lastCharacPosition;
                 selectedCharacter.transform.position = targetWorldPos;
                 posicionesOcupadas.Add(selectedCharacter);
-                Debug.Log("Hello World from " + targetWorldPos);
-                selectedCharacter = null;
+
+                Debug.Log("Hello from " + targetWorldPos);
+                if (posicionesOcupadas.Any(c => c.position == lastCharacPosition))
+                {
+                    Debug.Log("Añadido");
+                }
+                //selectedCharacter = null;
 
             }
         }
     }
 }
 /*
+
+if (personajeEnPosicion)
+{
+    // Obtén todos los personajes en la posición
+    List<CharInfo> personajesEnFila = posicionesOcupadas.Where(c => c.position == gridPos).ToList();
+
+    // Verifica si hay al menos un personaje en la fila
+    if (personajesEnFila.Count > 0)
+    {
+        // Obtén el último personaje de la fila
+        selectedCharacter = personajesEnFila.Last();
+        posicionesOcupadas.Remove(selectedCharacter);
+
+        Debug.Log("Personaje encontrado en la posición: " + gridPos);
+        Debug.Log("Color del personaje encontrado: " + selectedCharacter.color);
+
+        // Aquí puedes realizar acciones adicionales cuando se selecciona un personaje
+    }
+}
+
+
     void MoveCharacter(GameObject character, Vector3Int targetGridPos)
     {
         // Realizar verificaciones adicionales si es necesario antes de mover
