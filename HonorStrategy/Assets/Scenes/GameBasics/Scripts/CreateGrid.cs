@@ -20,7 +20,8 @@ public class CreateGrid : MonoBehaviour
     [SerializeField] int posEnemyX;
     [SerializeField] int posEnemyY;
 
-    HashSet<CharInfo> posicionesOcupadas = new HashSet<CharInfo>();
+    //HashSet<CharInfo> posicionesOcupadas = new HashSet<CharInfo>();
+    private List<CharInfo> posicionesOcupadas = new List<CharInfo>();
 
     private CharInfo selectedCharacter;
 
@@ -88,24 +89,27 @@ public class CreateGrid : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
             Vector3Int gridPos = tilemap.WorldToCell(mousePos);
-            Debug.Log("Hello World from mouse " + gridPos.x);
+            Debug.Log("Hello World from mouse " + gridPos.y);
 
             // Obtén todos los personajes en la posición x
             List<CharInfo> characInColumn = posicionesOcupadas
                 .Where(c => c.position.y == gridPos.y)
                 .ToList();
 
+            Debug.Log("conyador char " + characInColumn.Count);
+
                 // Verifica si hay al menos un personaje en la fila
             if (characInColumn.Count > 0)
             {
                 // Obtén el último personaje de la fila
                 selectedCharacter = characInColumn.Last();
-                posicionesOcupadas.Remove(selectedCharacter);
+                Debug.Log("Ultimo personaje " + selectedCharacter.position);
+                //posicionesOcupadas.Remove(selectedCharacter);
                 // Aquí puedes realizar acciones adicionales cuando se selecciona un personaje
             }
 
-            Debug.Log("Personaje encontrado en la posición: " + selectedCharacter.position);
-            Debug.Log("Color del personaje encontrado: " + selectedCharacter.color);
+           // Debug.Log("Personaje encontrado en la posición: " + selectedCharacter.position);
+            //Debug.Log("Color del personaje encontrado: " + selectedCharacter.color);
 
             // Aquí puedes realizar acciones adicionales cuando se selecciona un personaje
         }
@@ -123,39 +127,45 @@ public class CreateGrid : MonoBehaviour
                 mousePos.z = 0;
                 Vector3Int targetGridPos = tilemap.WorldToCell(mousePos);
 
-                CharInfo lastCharacInColumn = posicionesOcupadas
-                .Where(c => c.position.y == targetGridPos.y)
-                .LastOrDefault();
-
-                Debug.Log("Último personaje encontrado posicion " + lastCharacInColumn.position);
-
-                Vector3Int lastCharacPosition;
-
-                if (lastCharacInColumn != null)
+                if((targetGridPos.y != selectedCharacter.position.y) && tilemap.HasTile(targetGridPos))
                 {
-                    lastCharacPosition = lastCharacInColumn.position;
-                    lastCharacPosition += new Vector3Int(1, 0, 0);;
-                    Debug.Log("Último personaje encontrado");
-                } else {
-                    lastCharacPosition = lastCharacInColumn.position;
-                    lastCharacPosition.x = 12;
-                    Debug.Log("Último personaje encontrado else");
+                    CharInfo lastCharacInColumn = posicionesOcupadas
+                    .Where(c => c.position.y == targetGridPos.y)
+                    .LastOrDefault();
+
+                    Vector3Int lastCharacPosition = tilemap.WorldToCell(mousePos);
+
+                    if (lastCharacInColumn != null)
+                    {
+                        lastCharacPosition = lastCharacInColumn.position;
+                        lastCharacPosition -= new Vector3Int(1, 0, 0);;
+                        
+                    } else 
+                    {
+                        lastCharacPosition.x = 12;
+                    }
+
+                    Vector3 targetWorldPos = tilemap.GetCellCenterWorld(lastCharacPosition);
+
+                    selectedCharacter.position = lastCharacPosition;
+                    selectedCharacter.transform.position = targetWorldPos;
+
+                    SpriteRenderer spriteRenderer = selectedCharacter.GetComponent<SpriteRenderer>();
+                    spriteRenderer.sortingOrder = (12 - (targetGridPos.y));
+
+
+                    CharInfo newCharac = selectedCharacter;
+
+                    posicionesOcupadas.Remove(selectedCharacter);
+                    posicionesOcupadas.Add(newCharac);
+
+                    if (posicionesOcupadas.Any(c => c.position == lastCharacPosition))
+                    {
+                        Debug.Log("Añadido en " + selectedCharacter.position);
+                        Debug.Log("LastCharacter en " + lastCharacPosition);
+                        
+                    }
                 }
-
-
-                // Mover el personaje a la nueva posición
-                Vector3 targetWorldPos = tilemap.GetCellCenterWorld(lastCharacPosition);
-
-                selectedCharacter.position = lastCharacPosition;
-                selectedCharacter.transform.position = targetWorldPos;
-                posicionesOcupadas.Add(selectedCharacter);
-
-                Debug.Log("Hello from " + targetWorldPos);
-                if (posicionesOcupadas.Any(c => c.position == lastCharacPosition))
-                {
-                    Debug.Log("Añadido");
-                }
-                //selectedCharacter = null;
 
             }
         }
