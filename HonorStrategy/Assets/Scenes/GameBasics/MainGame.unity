@@ -295,10 +295,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c2952fe4b2f16484aba599441ab3d4dc, type: 2}
   characterPlayer: {fileID: 7681669696623389386, guid: 764311a9d09c53a458b40ab9c305201c, type: 3}
   characterEnemy: {fileID: 7526671516973069279, guid: 9634c25e4eb57204694fc11dfb3943db, type: 3}
-  posPlayerX: 1
-  posPlayerY: -1
-  posEnemyX: 18
-  posEnemyY: -2
+  selectedCharacter: {fileID: 8643162166929756542, guid: 764311a9d09c53a458b40ab9c305201c, type: 3}
 --- !u!4 &1196736396
 Transform:
   m_ObjectHideFlags: 0
@@ -425,34 +422,34 @@ Tilemap:
   m_TileMatrixArray:
   - m_RefCount: 0
     m_Data:
-      e00: -3.296283e+19
+      e00: 4.5e-44
       e01: 0
-      e02: -3.2500038
-      e03: -3.2500038
+      e02: 1.7618306e-19
+      e03: 1.7618306e-19
       e10: 0
       e11: 0
-      e12: 8.11e-43
-      e13: 8.11e-43
-      e20: -20051776
-      e21: -4.841795e-34
-      e22: 4.1923437e-19
-      e23: 1.1058019e-19
+      e12: 6.22e-43
+      e13: 6.22e-43
+      e20: 2.3402336e+20
+      e21: 3.7548676
+      e22: -7.5591065e-29
+      e23: -1.0902695e-19
       e30: 4.5905e-41
-      e31: 8.16e-43
-      e32: 8.13e-43
-      e33: 8.16e-43
+      e31: 6.22e-43
+      e32: 6.22e-43
+      e33: 6.25e-43
   m_TileColorArray:
   - m_RefCount: 0
     m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
   - m_RefCount: 0
     m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
   - m_RefCount: 0
-    m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
+    m_Data: {r: 3.4923e-41, g: 3.4923e-41, b: 3.4923e-41, a: 3.4923e-41}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: -16, y: -12, z: 0}
-  m_Size: {x: 16, y: 12, z: 1}
+  m_Origin: {x: -17, y: -12, z: 0}
+  m_Size: {x: 17, y: 38, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:

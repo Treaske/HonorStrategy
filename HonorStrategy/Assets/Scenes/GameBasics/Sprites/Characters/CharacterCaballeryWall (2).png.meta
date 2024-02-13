@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 296dc53cf4be5154ca1294a919ed6719
+guid: b26392c110a657f40b1c09ce52581c0b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 34
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,43 +123,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CharacterCaballeryGreen_0
+      name: CharacterCaballeryWall_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 10
-        width: 15
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 6
+        y: 7
+        width: 25
+        height: 26
+      alignment: 9
+      pivot: {x: 0.64581025, y: 0.32494962}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14db718dd5d9d474aaad71f74f9f0fa9
-      internalID: 818830662
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CharacterCaballeryGreen_1
-      rect:
-        serializedVersion: 2
-        x: 38
-        y: 10
-        width: 14
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7c72d0d942ced2345a64a3831c374734
-      internalID: 930639455
+      spriteID: 17094bc270bbb09438f030c10981b15d
+      internalID: -557018707
       vertices: []
       indices: 
       edges: []
@@ -175,8 +154,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      CharacterCaballeryGreen_0: 818830662
-      CharacterCaballeryGreen_1: 930639455
+      CharacterCaballeryWall_0: -557018707
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

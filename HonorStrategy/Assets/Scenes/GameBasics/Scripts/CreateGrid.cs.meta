@@ -3,7 +3,11 @@ guid: 3ba795b1549038b4484cb96f66ce10e7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - tilemap: {instanceID: 0}
+  - characterPlayer: {instanceID: 0}
+  - characterEnemy: {instanceID: 0}
+  - selectedCharacter: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

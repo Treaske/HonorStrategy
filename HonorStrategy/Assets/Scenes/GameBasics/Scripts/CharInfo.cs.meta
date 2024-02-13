@@ -3,7 +3,9 @@ guid: 5c74520a3960ea849ba0e7db775846d1
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - wallSprite: {fileID: -557018707, guid: b26392c110a657f40b1c09ce52581c0b, type: 3}
+  - grid: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

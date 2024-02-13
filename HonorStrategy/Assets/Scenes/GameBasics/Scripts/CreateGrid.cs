@@ -15,15 +15,9 @@ public class CreateGrid : MonoBehaviour
     static public int gridHeight = 12;
     static public int gridWidth = 12;
 
-    [SerializeField] int posPlayerX;
-    [SerializeField] int posPlayerY;
-    [SerializeField] int posEnemyX;
-    [SerializeField] int posEnemyY;
-
-    //HashSet<CharInfo> posicionesOcupadas = new HashSet<CharInfo>();
     private List<CharInfo> posicionesOcupadas = new List<CharInfo>();
 
-    private CharInfo selectedCharacter;
+    public CharInfo selectedCharacter;
 
     void Start()
     {
@@ -66,7 +60,10 @@ public class CreateGrid : MonoBehaviour
 
                 Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(targetGridPos);
                 characterObj.transform.position = playerWorldPosition;
-                spriteRenderer.sortingOrder = (12 - x);
+
+                int order = ((12 - x) * 10) + y;
+                
+                spriteRenderer.sortingOrder = order;
 
                 playerChar.position = targetGridPos;
 
@@ -80,6 +77,7 @@ public class CreateGrid : MonoBehaviour
     {
         HandleCharacterSelection();
         HandleCharacterMovement();
+        selectedCharacter.CheckNewPosition(posicionesOcupadas);
     }
 
     void HandleCharacterSelection()
@@ -89,29 +87,17 @@ public class CreateGrid : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
             Vector3Int gridPos = tilemap.WorldToCell(mousePos);
-            Debug.Log("Hello World from mouse " + gridPos.y);
 
-            // Obtén todos los personajes en la posición x
+            Debug.Log("Hola desde " + gridPos);
+
             List<CharInfo> characInColumn = posicionesOcupadas
                 .Where(c => c.position.y == gridPos.y)
                 .ToList();
 
-            Debug.Log("conyador char " + characInColumn.Count);
-
-                // Verifica si hay al menos un personaje en la fila
             if (characInColumn.Count > 0)
             {
-                // Obtén el último personaje de la fila
                 selectedCharacter = characInColumn.Last();
-                Debug.Log("Ultimo personaje " + selectedCharacter.position);
-                //posicionesOcupadas.Remove(selectedCharacter);
-                // Aquí puedes realizar acciones adicionales cuando se selecciona un personaje
             }
-
-           // Debug.Log("Personaje encontrado en la posición: " + selectedCharacter.position);
-            //Debug.Log("Color del personaje encontrado: " + selectedCharacter.color);
-
-            // Aquí puedes realizar acciones adicionales cuando se selecciona un personaje
         }
     }
 
@@ -151,65 +137,20 @@ public class CreateGrid : MonoBehaviour
                     selectedCharacter.transform.position = targetWorldPos;
 
                     SpriteRenderer spriteRenderer = selectedCharacter.GetComponent<SpriteRenderer>();
-                    spriteRenderer.sortingOrder = (12 - (targetGridPos.y));
 
+                    int order = ((12 - (targetGridPos.y)) * 10) + (12 -(targetGridPos.x));
+
+                    spriteRenderer.sortingOrder = order;
 
                     CharInfo newCharac = selectedCharacter;
 
                     posicionesOcupadas.Remove(selectedCharacter);
                     posicionesOcupadas.Add(newCharac);
-
-                    if (posicionesOcupadas.Any(c => c.position == lastCharacPosition))
-                    {
-                        Debug.Log("Añadido en " + selectedCharacter.position);
-                        Debug.Log("LastCharacter en " + lastCharacPosition);
-                        
-                    }
                 }
 
             }
         }
     }
+
+
 }
-/*
-
-if (personajeEnPosicion)
-{
-    // Obtén todos los personajes en la posición
-    List<CharInfo> personajesEnFila = posicionesOcupadas.Where(c => c.position == gridPos).ToList();
-
-    // Verifica si hay al menos un personaje en la fila
-    if (personajesEnFila.Count > 0)
-    {
-        // Obtén el último personaje de la fila
-        selectedCharacter = personajesEnFila.Last();
-        posicionesOcupadas.Remove(selectedCharacter);
-
-        Debug.Log("Personaje encontrado en la posición: " + gridPos);
-        Debug.Log("Color del personaje encontrado: " + selectedCharacter.color);
-
-        // Aquí puedes realizar acciones adicionales cuando se selecciona un personaje
-    }
-}
-
-
-    void MoveCharacter(GameObject character, Vector3Int targetGridPos)
-    {
-        // Realizar verificaciones adicionales si es necesario antes de mover
-        // ...
-
-        // Actualizar la posición del personaje en el grid
-        Vector3 targetWorldPos = tilemap.GetCellCenterWorld(targetGridPos);
-        character.transform.position = targetWorldPos;
-
-        // Desseleccionar el personaje después de moverlo
-        DeselectCharacter();
-    }
-
-    void DeselectCharacter()
-    {
-        selectedCharacter = null;
-        // Aquí puedes realizar acciones adicionales cuando se desselecciona un personaje
-    }
-}
-*/
