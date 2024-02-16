@@ -41,6 +41,7 @@ public class CreateGrid : MonoBehaviour
     {
         for (int x = 0; x < gridWidth; x++)
         {
+            // for que recorre una a una las columnas y genera un numero aleatorio de characters
             int randomNum = Random.Range(0, 9);
             for (int y = 0; y < randomNum; y++)
             {
@@ -61,11 +62,16 @@ public class CreateGrid : MonoBehaviour
                 Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(targetGridPos);
                 characterObj.transform.position = playerWorldPosition;
 
+                //calculando el sortingOrder de los sprites para que no den erorres visuales en el isometrico
                 int order = ((12 - x) * 10) + y;
                 
                 spriteRenderer.sortingOrder = order;
 
                 playerChar.position = targetGridPos;
+
+                //datos del charcter, a cambiar cuando haya mas tipos
+                playerChar.damage = 1;
+                playerChar.health = 1;
 
                 posicionesOcupadas.Add(playerChar);
                
@@ -77,7 +83,7 @@ public class CreateGrid : MonoBehaviour
     {
         HandleCharacterSelection();
         HandleCharacterMovement();
-        selectedCharacter.CheckNewPosition(posicionesOcupadas);
+        selectedCharacter.CheckNewPosition(posicionesOcupadas, selectedCharacter);
     }
 
     void HandleCharacterSelection()
@@ -105,7 +111,7 @@ public class CreateGrid : MonoBehaviour
 
     void HandleCharacterMovement()
     {
-        if (selectedCharacter != null)
+        if (selectedCharacter != null && selectedCharacter.damage != 0)
         {
             if (Input.GetMouseButtonDown(1))
             {

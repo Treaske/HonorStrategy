@@ -30,34 +30,72 @@ public class CharInfo : MonoBehaviour
         damage = dam;
     }
 
-    public void CheckNewPosition(List<CharInfo> posicionesOcupadas)
+    public void CheckNewPosition(List<CharInfo> posicionesOcupadas, CharInfo selectedCharacter)
     {
-        CharInfo characterIn = GetComponent<CharInfo>();
-
-        //HashSet matchedTiles = new HashSet();
-
-        //matchedTiles.Add(characterIn);
-
-        List<CharInfo> sameLineCharacters = posicionesOcupadas
-            .Where(c => c.position.x == characterIn.position.x)
-            .ToList();
-
-        /*
-        int cont = 0;
-
-        for( int y = 0; y < 12; y++)
+        if (Input.GetMouseButtonDown(1))
         {
-            CharInfo characterAp = ;
+            CharInfo characterIn = selectedCharacter;
+            CharInfo characterAp = selectedCharacter;
 
-            if()
-            {
+            HashSet<CharInfo> matchedTiles = new HashSet<CharInfo>();
 
-            }
-            characterIn = posicionesOcupadas
+            matchedTiles.Add(selectedCharacter);
+
+            List<CharInfo> sameLineCharacters = posicionesOcupadas
                 .Where(c => c.position.x == characterIn.position.x)
-        }
-        */
+                .ToList();
 
+
+            for( int y = 0; y < sameLineCharacters.Count; y++)
+            {
+                characterAp = posicionesOcupadas.FirstOrDefault(c => c.position == new Vector3Int(characterIn.position.x, characterIn.position.y + 1, characterIn.position.z));;
+
+                if(characterAp != null)
+                {
+                    if(characterAp.color == selectedCharacter.color)
+                    {
+                        matchedTiles.Add(characterAp);
+                        characterIn = characterAp;
+                    } else {
+                        y = sameLineCharacters.Count;
+                    }   
+                }
+            }    
+
+            characterIn = selectedCharacter;
+
+            for( int i = 0; i < sameLineCharacters.Count; i++)
+            {
+                characterAp = posicionesOcupadas.FirstOrDefault(c => c.position == new Vector3Int(characterIn.position.x, characterIn.position.y - 1, characterIn.position.z));;
+
+                if(characterAp != null)
+                {
+                    if(characterAp.color == selectedCharacter.color)
+                    {
+                        matchedTiles.Add(characterAp);
+                        characterIn = characterAp;
+                    } else {
+                        i = sameLineCharacters.Count;
+                    }
+                }
+            }
+
+            if (matchedTiles.Count > 2)
+            {
+                foreach (var character in matchedTiles)
+                {
+                    character.GetComponent<SpriteRenderer>().sprite = wallSprite;
+
+                    int order = ((12 - (character.position.y)) * 10) + (12 -(character.position.x));
+
+                    character.GetComponent<SpriteRenderer>().sortingOrder = order;
+
+                    character.damage = 0;
+                }
+            }          
+        }
+        
+/*
         if (sameLineCharacters.Count > 5)
         {
 
@@ -65,6 +103,8 @@ public class CharInfo : MonoBehaviour
             GetComponent<SpriteRenderer>().sprite = wallSprite;
             GetComponent<SpriteRenderer>().sortingOrder = order;
         }
+
+        */
     }
 
 }
