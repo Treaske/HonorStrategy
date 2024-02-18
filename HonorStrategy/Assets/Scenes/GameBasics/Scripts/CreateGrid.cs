@@ -54,7 +54,7 @@ public class CreateGrid : MonoBehaviour
 
                 Vector3Int targetGridPos = new Vector3Int(12, x, 0);
                 
-                while (posicionesOcupadas.Any(c => c.position == targetGridPos))
+                while (posicionesOcupadas.Any(c => c.positionInt == targetGridPos))
                 {
                     targetGridPos -= new Vector3Int(1, 0, 0);
                 }
@@ -67,11 +67,12 @@ public class CreateGrid : MonoBehaviour
                 
                 spriteRenderer.sortingOrder = order;
 
-                playerChar.position = targetGridPos;
+                playerChar.positionInt = targetGridPos;
 
                 //datos del charcter, a cambiar cuando haya mas tipos
                 playerChar.damage = 1;
                 playerChar.health = 1;
+                playerChar.modo = 1;
 
                 posicionesOcupadas.Add(playerChar);
                
@@ -97,12 +98,14 @@ public class CreateGrid : MonoBehaviour
             Debug.Log("Hola desde " + gridPos);
 
             List<CharInfo> characInColumn = posicionesOcupadas
-                .Where(c => c.position.y == gridPos.y)
+                .Where(c => c.positionInt.y == gridPos.y)
+                .OrderBy(c => c.positionInt.x)
                 .ToList();
 
             if (characInColumn.Count > 0)
             {
-                selectedCharacter = characInColumn.Last();
+                selectedCharacter = characInColumn.First();
+                Debug.Log("posicion" + selectedCharacter.positionInt);
             }
         }
     }
@@ -111,7 +114,7 @@ public class CreateGrid : MonoBehaviour
 
     void HandleCharacterMovement()
     {
-        if (selectedCharacter != null && selectedCharacter.damage != 0)
+        if (selectedCharacter != null && selectedCharacter.modo != 0)
         {
             if (Input.GetMouseButtonDown(1))
             {
@@ -119,17 +122,18 @@ public class CreateGrid : MonoBehaviour
                 mousePos.z = 0;
                 Vector3Int targetGridPos = tilemap.WorldToCell(mousePos);
 
-                if((targetGridPos.y != selectedCharacter.position.y) && tilemap.HasTile(targetGridPos))
+                if((targetGridPos.y != selectedCharacter.positionInt.y) && tilemap.HasTile(targetGridPos))
                 {
                     CharInfo lastCharacInColumn = posicionesOcupadas
-                    .Where(c => c.position.y == targetGridPos.y)
-                    .LastOrDefault();
+                    .Where(c => c.positionInt.y == targetGridPos.y)
+                    .OrderBy(c => c.positionInt.x)
+                    .FirstOrDefault();
 
                     Vector3Int lastCharacPosition = tilemap.WorldToCell(mousePos);
 
                     if (lastCharacInColumn != null)
                     {
-                        lastCharacPosition = lastCharacInColumn.position;
+                        lastCharacPosition = lastCharacInColumn.positionInt;
                         lastCharacPosition -= new Vector3Int(1, 0, 0);;
                         
                     } else 
@@ -139,7 +143,7 @@ public class CreateGrid : MonoBehaviour
 
                     Vector3 targetWorldPos = tilemap.GetCellCenterWorld(lastCharacPosition);
 
-                    selectedCharacter.position = lastCharacPosition;
+                    selectedCharacter.positionInt = lastCharacPosition;
                     selectedCharacter.transform.position = targetWorldPos;
 
                     SpriteRenderer spriteRenderer = selectedCharacter.GetComponent<SpriteRenderer>();
@@ -157,6 +161,9 @@ public class CreateGrid : MonoBehaviour
             }
         }
     }
+
+    
+
 
 
 }

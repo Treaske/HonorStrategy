@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 132
-  m_Sprite: {fileID: -557018707, guid: b26392c110a657f40b1c09ce52581c0b, type: 3}
+  m_Sprite: {fileID: -1979582609, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -122,7 +122,7 @@ BoxCollider2D:
   m_Offset: {x: 0.0082181245, y: 0.32872343}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.64581025, y: 0.32494962}
+    pivot: {x: 0.6458102, y: 0.3249496}
     oldSize: {x: 0.78125, y: 0.8125}
     newSize: {x: 0.78125, y: 0.8125}
     adaptiveTilingThreshold: 0.5
@@ -179,4 +179,4 @@ MonoBehaviour:
   - {fileID: -1917722276, guid: 6bca52c4c3a04694da52cc71de0c2480, type: 3}
   - {fileID: 602289152, guid: 6bca52c4c3a04694da52cc71de0c2480, type: 3}
   - {fileID: 284433143, guid: 6bca52c4c3a04694da52cc71de0c2480, type: 3}
-  wallSprite: {fileID: -557018707, guid: b26392c110a657f40b1c09ce52581c0b, type: 3}
+  wallSprite: {fileID: -1979582609, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}

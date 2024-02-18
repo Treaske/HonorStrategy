@@ -4,8 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - wallSprite: {fileID: -557018707, guid: b26392c110a657f40b1c09ce52581c0b, type: 3}
-  - grid: {instanceID: 0}
+  - wallSprite: {fileID: -1979582609, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

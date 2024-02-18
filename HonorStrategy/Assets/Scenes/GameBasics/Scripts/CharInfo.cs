@@ -5,10 +5,11 @@ using System.Linq;
 
 public class CharInfo : MonoBehaviour
 {
-    public Vector3Int position;
+    public Vector3Int positionInt;
     public int color;
     public int health;
     public int damage;
+    public int modo;
 
     public Sprite[] sprites;
 
@@ -22,18 +23,23 @@ public class CharInfo : MonoBehaviour
     }
 
 
-    public void Personaje(Vector3Int pos, int col, int hea, int dam)
+    public void Personaje(Vector3Int pos, int col, int hea, int dam, int mod)
     {
-        position = pos;
+        positionInt = pos;
         color = col;
         health = hea;
         damage = dam;
+        modo = mod;
     }
 
     public void CheckNewPosition(List<CharInfo> posicionesOcupadas, CharInfo selectedCharacter)
     {
         if (Input.GetMouseButtonDown(1))
         {
+            //Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //mousePos.z = 0;
+            //Vector3Int targetGridPos = tilemap.WorldToCell(mousePos);
+
             CharInfo characterIn = selectedCharacter;
             CharInfo characterAp = selectedCharacter;
 
@@ -42,13 +48,13 @@ public class CharInfo : MonoBehaviour
             matchedTiles.Add(selectedCharacter);
 
             List<CharInfo> sameLineCharacters = posicionesOcupadas
-                .Where(c => c.position.x == characterIn.position.x)
+                .Where(c => c.positionInt.x == characterIn.positionInt.x)
                 .ToList();
 
 
             for( int y = 0; y < sameLineCharacters.Count; y++)
             {
-                characterAp = posicionesOcupadas.FirstOrDefault(c => c.position == new Vector3Int(characterIn.position.x, characterIn.position.y + 1, characterIn.position.z));;
+                characterAp = posicionesOcupadas.FirstOrDefault(c => c.positionInt == new Vector3Int(characterIn.positionInt.x, characterIn.positionInt.y + 1, characterIn.positionInt.z));;
 
                 if(characterAp != null)
                 {
@@ -66,7 +72,7 @@ public class CharInfo : MonoBehaviour
 
             for( int i = 0; i < sameLineCharacters.Count; i++)
             {
-                characterAp = posicionesOcupadas.FirstOrDefault(c => c.position == new Vector3Int(characterIn.position.x, characterIn.position.y - 1, characterIn.position.z));;
+                characterAp = posicionesOcupadas.FirstOrDefault(c => c.positionInt == new Vector3Int(characterIn.positionInt.x, characterIn.positionInt.y - 1, characterIn.positionInt.z));;
 
                 if(characterAp != null)
                 {
@@ -86,25 +92,73 @@ public class CharInfo : MonoBehaviour
                 {
                     character.GetComponent<SpriteRenderer>().sprite = wallSprite;
 
-                    int order = ((12 - (character.position.y)) * 10) + (12 -(character.position.x));
+                    int order = ((12 - (character.positionInt.y)) * 10) + (12 -(character.positionInt.x));
 
                     character.GetComponent<SpriteRenderer>().sortingOrder = order;
 
-                    character.damage = 0;
+                    character.modo = 0;
+                    character.color = 3;
                 }
-            }          
+            }
+
+            HandleNewPosition(posicionesOcupadas);   
         }
-        
-/*
-        if (sameLineCharacters.Count > 5)
+    
+    }
+
+    void HandleNewPosition(List<CharInfo> posicionesOcupadas)
+    {
+        for (int a = 0; a < 12; a++)
         {
 
-            int order = ((12 - (characterIn.position.y)) * 10) + (12 -(characterIn.position.x));
-            GetComponent<SpriteRenderer>().sprite = wallSprite;
-            GetComponent<SpriteRenderer>().sortingOrder = order;
-        }
+            List<CharInfo> sameLineCharacters = posicionesOcupadas
+                .Where(c => c.positionInt.y == a)
+                .ToList();
 
-        */
+            if (sameLineCharacters.Count > 0)
+            {
+                for (int l = 12; l > (12 - sameLineCharacters.Count); l--)
+                {
+                    CharInfo characterWall = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l, a, 0));;
+                    //Debug.Log("debug characterWall " + characterWall.positionInt);
+
+                    if (characterWall.positionInt.x != 12 && characterWall.modo == 0)
+                    {
+                        CharInfo characterIn = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l + 1, a, 0));;
+                            
+                        posicionesOcupadas.Remove(characterIn);
+                        posicionesOcupadas.Remove(characterWall);
+                        int orderLayer = 0;
+
+                        for(int x = l; x < 12; x++)
+                        {
+                            characterIn.positionInt.x = x;
+                            Vector3 posicionCharacter = characterIn.transform.position;
+                            characterIn.transform.position = new Vector3(posicionCharacter.x - 0.5f, posicionCharacter.y - 0.25f, posicionCharacter.z);;
+
+                            orderLayer = ((12 - (characterIn.positionInt.y)) * 10) + (12 -(characterIn.positionInt.x));
+                            characterIn.GetComponent<SpriteRenderer>().sortingOrder = orderLayer;
+
+                            characterWall.positionInt.x = x + 1;
+                            posicionCharacter = characterWall.transform.position;
+                            characterWall.transform.position = new Vector3(posicionCharacter.x + 0.5f, posicionCharacter.y + 0.25f, posicionCharacter.z);;
+
+                            posicionesOcupadas.Add(characterIn);
+
+                            characterIn = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(x + 2, a, 0));;
+
+                            posicionesOcupadas.Remove(characterIn);
+                        }
+
+                        orderLayer = ((12 - (characterWall.positionInt.y)) * 10) + (12 -(characterWall.positionInt.x));
+                        characterWall.GetComponent<SpriteRenderer>().sortingOrder = orderLayer;
+                        posicionesOcupadas.Add(characterWall);
+                    }
+                } 
+            }   
+        }
     }
+
+   
 
 }
