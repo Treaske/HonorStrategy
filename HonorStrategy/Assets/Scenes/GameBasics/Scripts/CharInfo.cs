@@ -10,10 +10,11 @@ public class CharInfo : MonoBehaviour
     public int health;
     public int damage;
     public int modo;
+    public int status;
 
     public Sprite[] sprites;
 
-    public Sprite wallSprite;
+    public Sprite[] wallSprite;
 
 
     void Start()
@@ -23,22 +24,20 @@ public class CharInfo : MonoBehaviour
     }
 
 
-    public void Personaje(Vector3Int pos, int col, int hea, int dam, int mod)
+    public void Personaje(Vector3Int pos, int col, int hea, int dam, int mod, int stat)
     {
         positionInt = pos;
         color = col;
         health = hea;
         damage = dam;
         modo = mod;
+        status = stat;
     }
 
     public void CheckNewPosition(List<CharInfo> posicionesOcupadas, CharInfo selectedCharacter)
     {
         if (Input.GetMouseButtonDown(1))
         {
-            //Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //mousePos.z = 0;
-            //Vector3Int targetGridPos = tilemap.WorldToCell(mousePos);
 
             CharInfo characterIn = selectedCharacter;
             CharInfo characterAp = selectedCharacter;
@@ -90,7 +89,7 @@ public class CharInfo : MonoBehaviour
             {
                 foreach (var character in matchedTiles)
                 {
-                    character.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    character.GetComponent<SpriteRenderer>().sprite = wallSprite[1];
 
                     int order = ((12 - (character.positionInt.y)) * 10) + (12 -(character.positionInt.x));
 
@@ -101,12 +100,12 @@ public class CharInfo : MonoBehaviour
                 }
             }
 
-            HandleNewPosition(posicionesOcupadas);   
+            HandleNewPositionWall(posicionesOcupadas);
         }
     
     }
 
-    void HandleNewPosition(List<CharInfo> posicionesOcupadas)
+    void HandleNewPositionWall(List<CharInfo> posicionesOcupadas)
     {
         for (int a = 0; a < 12; a++)
         {
@@ -119,10 +118,11 @@ public class CharInfo : MonoBehaviour
             {
                 for (int l = 12; l > (12 - sameLineCharacters.Count); l--)
                 {
-                    CharInfo characterWall = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l, a, 0));;
-                    //Debug.Log("debug characterWall " + characterWall.positionInt);
 
-                    if (characterWall.positionInt.x != 12 && characterWall.modo == 0)
+                    CharInfo characterWall = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l, a, 0));;
+                    
+
+                    if (characterWall != null && (characterWall.positionInt.x != 12 && characterWall.modo == 0))
                     {
                         CharInfo characterIn = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l + 1, a, 0));;
                             
@@ -153,11 +153,74 @@ public class CharInfo : MonoBehaviour
                         orderLayer = ((12 - (characterWall.positionInt.y)) * 10) + (12 -(characterWall.positionInt.x));
                         characterWall.GetComponent<SpriteRenderer>().sortingOrder = orderLayer;
                         posicionesOcupadas.Add(characterWall);
+                        
+                        int countModeWall = sameLineCharacters.Count(c => c.modo == 0);
+                        
+                        if(countModeWall >= 2)
+                        {
+                            FuseCharacters(posicionesOcupadas, a);
+                        }
                     }
                 } 
             }   
         }
     }
+
+    void FuseCharacters(List<CharInfo> posicionesOcupadas, int y)
+    {
+        /*
+            Debug.Log("debug characterWall 1: " + characterIn.positionInt);
+            Debug.Log("y: " + y);
+            Debug.Log("x: " + x);
+            Debug.Log("debug characterWall 1: " + characterInWall.positionInt);
+            Debug.Log("debug characterWall 2: " + characterApWall.positionInt);
+        */
+
+      
+        for(int x = 12; x > 0; x--)
+        {    
+            //Debug.Log("x: " + x);
+            CharInfo characterInWall = posicionesOcupadas.FirstOrDefault(c => c.positionInt == new Vector3Int(x, y, 0));;
+            CharInfo characterApWall = posicionesOcupadas.FirstOrDefault(c => c.positionInt == new Vector3Int(x - 1, y, 0));;
+
+            if(characterApWall != null && characterInWall != null)
+            {
+                //Debug.Log("debug characterWall 1: " + characterInWall.positionInt);
+                //Debug.Log("debug characterWall 2: " + characterApWall.positionInt);
+                if(characterInWall.status == characterApWall.status && (characterInWall.modo == 0 && characterApWall.modo == 0))
+                {
+                    characterInWall.status++;
+                    characterInWall.GetComponent<SpriteRenderer>().sprite = wallSprite[characterInWall.status];
+
+                    posicionesOcupadas.Remove(characterApWall);
+                    Destroy(characterApWall.gameObject);
+
+                    List<CharInfo> sameLineCharacters = posicionesOcupadas
+                        .Where(c => c.positionInt.y == y)
+                        .OrderByDescending(c => c.positionInt.x)
+                        .Skip(1)
+                        .ToList();
+
+                    //Debug.Log("y: " + y);
+                    //Debug.Log("Count: " + sameLineCharacters.Count);
+
+                    //sumar +1 a todos los de la fila
+                    // Aumentar la posición X de los personajes en la misma fila
+                    foreach (CharInfo character in sameLineCharacters)
+                    {
+                        character.positionInt.x += 1;
+                        Vector3 posicionCharacter = character.transform.position;
+                        character.transform.position = new Vector3(posicionCharacter.x + 0.5f, posicionCharacter.y + 0.25f, posicionCharacter.z);;
+                        posicionesOcupadas.Add(character);
+                    }
+                }
+            } else{
+                x = 0;
+            }
+
+        }
+    }
+
 
    
 

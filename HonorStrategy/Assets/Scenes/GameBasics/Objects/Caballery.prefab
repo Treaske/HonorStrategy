@@ -171,12 +171,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c74520a3960ea849ba0e7db775846d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0, z: 0}
+  positionInt: {x: 0, y: 0, z: 0}
   color: 0
   health: 0
   damage: 0
+  modo: 0
+  status: 0
   sprites:
   - {fileID: -1917722276, guid: 6bca52c4c3a04694da52cc71de0c2480, type: 3}
   - {fileID: 602289152, guid: 6bca52c4c3a04694da52cc71de0c2480, type: 3}
   - {fileID: 284433143, guid: 6bca52c4c3a04694da52cc71de0c2480, type: 3}
-  wallSprite: {fileID: -1979582609, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}
+  wallSprite:
+  - {fileID: -668207340, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}
+  - {fileID: -1979582609, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}
+  - {fileID: 597574710, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}

@@ -73,6 +73,7 @@ public class CreateGrid : MonoBehaviour
                 playerChar.damage = 1;
                 playerChar.health = 1;
                 playerChar.modo = 1;
+                playerChar.status = 1;
 
                 posicionesOcupadas.Add(playerChar);
                
@@ -84,7 +85,7 @@ public class CreateGrid : MonoBehaviour
     {
         HandleCharacterSelection();
         HandleCharacterMovement();
-        selectedCharacter.CheckNewPosition(posicionesOcupadas, selectedCharacter);
+    
     }
 
     void HandleCharacterSelection()
@@ -95,7 +96,7 @@ public class CreateGrid : MonoBehaviour
             mousePos.z = 0;
             Vector3Int gridPos = tilemap.WorldToCell(mousePos);
 
-            Debug.Log("Hola desde " + gridPos);
+            //Debug.Log("Hola desde " + gridPos);
 
             List<CharInfo> characInColumn = posicionesOcupadas
                 .Where(c => c.positionInt.y == gridPos.y)
@@ -105,9 +106,10 @@ public class CreateGrid : MonoBehaviour
             if (characInColumn.Count > 0)
             {
                 selectedCharacter = characInColumn.First();
-                Debug.Log("posicion" + selectedCharacter.positionInt);
+                //Debug.Log("posicion" + selectedCharacter.positionInt);
             }
         }
+        
     }
 
 
@@ -157,8 +159,14 @@ public class CreateGrid : MonoBehaviour
                     posicionesOcupadas.Remove(selectedCharacter);
                     posicionesOcupadas.Add(newCharac);
                 }
-
+                if(selectedCharacter != null)
+                {
+                    selectedCharacter.CheckNewPosition(posicionesOcupadas, selectedCharacter);
+                    //Debug.Log("debug characterWall " + selectedCharacter.positionInt);
+                    selectedCharacter = null;
+                }
             }
+            
         }
     }
 
