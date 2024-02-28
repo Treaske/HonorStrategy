@@ -6,7 +6,7 @@ using System.Linq;
 public class CharInfo : MonoBehaviour
 {
     public Vector3Int positionInt;
-    public int color;
+    public int colorInt;
     public int health;
     public int damage;
     public int modo;
@@ -19,15 +19,15 @@ public class CharInfo : MonoBehaviour
 
     void Start()
     {
-        color = Random.Range(0, sprites.Length);
-        GetComponent<SpriteRenderer>().sprite = sprites[color];
+        colorInt = Random.Range(0, sprites.Length);
+        GetComponent<SpriteRenderer>().sprite = sprites[colorInt];
     }
 
 
     public void Personaje(Vector3Int pos, int col, int hea, int dam, int mod, int stat)
     {
         positionInt = pos;
-        color = col;
+        colorInt = col;
         health = hea;
         damage = dam;
         modo = mod;
@@ -57,7 +57,7 @@ public class CharInfo : MonoBehaviour
 
                 if(characterAp != null)
                 {
-                    if(characterAp.color == selectedCharacter.color)
+                    if(characterAp.colorInt == selectedCharacter.colorInt)
                     {
                         matchedTiles.Add(characterAp);
                         characterIn = characterAp;
@@ -75,7 +75,7 @@ public class CharInfo : MonoBehaviour
 
                 if(characterAp != null)
                 {
-                    if(characterAp.color == selectedCharacter.color)
+                    if(characterAp.colorInt == selectedCharacter.colorInt)
                     {
                         matchedTiles.Add(characterAp);
                         characterIn = characterAp;
@@ -96,11 +96,11 @@ public class CharInfo : MonoBehaviour
                     character.GetComponent<SpriteRenderer>().sortingOrder = order;
 
                     character.modo = 0;
-                    character.color = 3;
+                    character.colorInt = 3;
                 }
             }
 
-            HandleNewPositionWall(posicionesOcupadas);
+            //HandleNewPositionWall(posicionesOcupadas);
         }
     
     }
@@ -126,8 +126,9 @@ public class CharInfo : MonoBehaviour
                     {
                         if(characterWall.positionInt.x != 12 && characterWall.modo == 0)
                         {
-                            if((characterIn.modo == 0 && characterIn.status <= characterWall.status) || characterIn.modo == 1)
+                            if((characterIn.modo == 0 && characterIn.status < characterWall.status) || characterIn.modo == 1)
                             {
+                                //Debug.Log("Hola desde" + characterWall.positionInt);
                                 posicionesOcupadas.Remove(characterIn);
                                 posicionesOcupadas.Remove(characterWall);
 
@@ -148,6 +149,7 @@ public class CharInfo : MonoBehaviour
 
                             } else if ((characterIn.modo == 0 && characterIn.status == characterWall.status) && characterIn.status != 2)
                             {
+                                Debug.Log("Hola desde if " + characterWall.positionInt);
                                 posicionesOcupadas.Remove(characterWall);
 
                                 characterIn.status++;
@@ -155,14 +157,16 @@ public class CharInfo : MonoBehaviour
 
                                 Destroy(characterWall.gameObject);
 
-                                for(int i = l; i > (11 - sameLineCharacters.Count); i--)
+                                for(int i = l; i > (13 - sameLineCharacters.Count); i--)
                                 {
-                                    characterWall = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l - 1, a, 0));;
+                                    Debug.Log("Hola desde if: " + characterWall.positionInt);
+                                    characterWall = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(i - 1, a, 0));;
                                     posicionesOcupadas.Remove(characterWall);
                                     characterWall.positionInt.x += 1;
                                     Vector3 posicionCharacter = characterWall.transform.position;
                                     characterWall.transform.position = new Vector3(posicionCharacter.x + 0.5f, posicionCharacter.y + 0.25f, posicionCharacter.z);;
                                     posicionesOcupadas.Add(characterWall);
+                                    
                                 }
                             }
                         }

@@ -296,6 +296,10 @@ MonoBehaviour:
   characterPlayer: {fileID: 7681669696623389386, guid: 764311a9d09c53a458b40ab9c305201c, type: 3}
   characterEnemy: {fileID: 7526671516973069279, guid: 9634c25e4eb57204694fc11dfb3943db, type: 3}
   selectedCharacter: {fileID: 8643162166929756542, guid: 764311a9d09c53a458b40ab9c305201c, type: 3}
+  wallSprite:
+  - {fileID: -668207340, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}
+  - {fileID: -1979582609, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}
+  - {fileID: 597574710, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}
 --- !u!4 &1196736396
 Transform:
   m_ObjectHideFlags: 0
