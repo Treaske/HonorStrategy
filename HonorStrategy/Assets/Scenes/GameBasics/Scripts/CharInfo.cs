@@ -19,8 +19,11 @@ public class CharInfo : MonoBehaviour
 
     void Start()
     {
-        colorInt = Random.Range(0, sprites.Length);
-        GetComponent<SpriteRenderer>().sprite = sprites[colorInt];
+        //Debug.Log("Hola desde" + colorInt);
+        if(colorInt <= 2)
+        {
+            GetComponent<SpriteRenderer>().sprite = sprites[colorInt];
+        }
     }
 
 
@@ -100,7 +103,7 @@ public class CharInfo : MonoBehaviour
                 }
             }
 
-            //HandleNewPositionWall(posicionesOcupadas);
+            HandleNewPositionWall(posicionesOcupadas);
         }
     
     }
@@ -176,103 +179,4 @@ public class CharInfo : MonoBehaviour
             }   
         }
     }
-
-/*
-    void FuseCharacters(List<CharInfo> posicionesOcupadas, int y)
-    {
-
-        for(int x = 12; x > 0; x--)
-        {    
-
-            CharInfo characterInWall = posicionesOcupadas.FirstOrDefault(c => c.positionInt == new Vector3Int(x, y, 0));;
-            CharInfo characterApWall = posicionesOcupadas.FirstOrDefault(c => c.positionInt == new Vector3Int(x - 1, y, 0));;
-
-            if(characterApWall != null && characterInWall != null)
-            {
-                
-                if(characterInWall.status == characterApWall.status && (characterInWall.modo == 0 && characterApWall.modo == 0))
-                {
-                    characterInWall.status++;
-                    characterInWall.GetComponent<SpriteRenderer>().sprite = wallSprite[characterInWall.status];
-
-                    posicionesOcupadas.Remove(characterApWall);
-                    Destroy(characterApWall.gameObject);
-
-                    List<CharInfo> sameLineCharacters = posicionesOcupadas
-                        .Where(c => c.positionInt.y == y)
-                        .OrderByDescending(c => c.positionInt.x)
-                        .Skip(1)
-                        .ToList();
-
-                    foreach (CharInfo character in sameLineCharacters)
-                    {
-                        character.positionInt.x += 1;
-                        Vector3 posicionCharacter = character.transform.position;
-                        character.transform.position = new Vector3(posicionCharacter.x + 0.5f, posicionCharacter.y + 0.25f, posicionCharacter.z);;
-                        posicionesOcupadas.Add(character);
-                    }
-                }
-            } else{
-                x = 0;
-            }
-
-        }
-    }
-*/
-
-   
-
 }
-/*
-                    CharInfo characterWall = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l, a, 0));;
-                    CharInfo characterIn = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l + 1, a, 0));;
-
-                    if ((characterWall != null && characterIn != null) && (characterWall.positionInt.x != 12 && characterWall.modo == 0))
-                    {
-                        Debug.Log("Character Wall " + characterWall.positionInt);
-                        Debug.Log("Character In " + characterIn.positionInt);
-                            
-                        posicionesOcupadas.Remove(characterIn);
-                        posicionesOcupadas.Remove(characterWall);
-                        int orderLayer = 0;
-
-                        for(int x = l; x < 12; x++)
-                        {
-                            Debug.Log("Character Wall " + x + " " + characterWall.positionInt);
-                            
-                            Debug.Log("Character In " + x + " " + characterIn.positionInt);
-                            if (characterIn.status <= characterWall.status)
-                            {
-                                    
-                                characterIn.positionInt.x = x;
-                                Vector3 posicionCharacter = characterIn.transform.position;
-                                characterIn.transform.position = new Vector3(posicionCharacter.x - 0.5f, posicionCharacter.y - 0.25f, posicionCharacter.z);;
-
-                                orderLayer = ((12 - (characterIn.positionInt.y)) * 10) + (12 -(characterIn.positionInt.x));
-                                characterIn.GetComponent<SpriteRenderer>().sortingOrder = orderLayer;
-
-                                characterWall.positionInt.x = x + 1;
-                                posicionCharacter = characterWall.transform.position;
-                                characterWall.transform.position = new Vector3(posicionCharacter.x + 0.5f, posicionCharacter.y + 0.25f, posicionCharacter.z);;
-
-                                posicionesOcupadas.Add(characterIn);
-
-                                characterIn = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(x + 2, a, 0));;
-
-                                posicionesOcupadas.Remove(characterIn);
-                            }
-                            
-                        }
-
-                        orderLayer = ((12 - (characterWall.positionInt.y)) * 10) + (12 -(characterWall.positionInt.x));
-                        characterWall.GetComponent<SpriteRenderer>().sortingOrder = orderLayer;
-                        posicionesOcupadas.Add(characterWall);
-                        
-                        int countModeWall = sameLineCharacters.Count(c => c.modo == 0);
-                        
-                        if(countModeWall >= 2)
-                        {
-                            FuseCharacters(posicionesOcupadas, a);
-                        }
-                        }
-                        */
