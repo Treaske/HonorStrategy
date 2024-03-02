@@ -76,7 +76,7 @@ public class CreateGrid : MonoBehaviour
                 playerChar.colorInt = Random.Range(0, 3);
                 playerChar.damage = 1;
                 playerChar.health = 1;
-                playerChar.modo = 1;
+                playerChar.modo = 2;
                 playerChar.status = 1;
 
                 posicionesOcupadas.Add(playerChar);
@@ -116,11 +116,9 @@ public class CreateGrid : MonoBehaviour
         
     }
 
-
-
     void HandleCharacterMovement()
     {
-        if (selectedCharacter != null && selectedCharacter.modo != 0)
+        if (selectedCharacter != null && selectedCharacter.modo == 2)
         {
             if (Input.GetMouseButtonDown(1))
             {
@@ -195,7 +193,7 @@ public class CreateGrid : MonoBehaviour
                     {
                         if(characterWall.positionInt.x != 12 && characterWall.modo == 0)
                         {
-                            if((characterIn.modo == 0 && characterIn.status < characterWall.status) || characterIn.modo == 1)
+                            if((characterIn.status < characterWall.status) || characterIn.modo > characterWall.modo)
                             {
                                 //Debug.Log("Hola desde" + characterWall.positionInt);
                                 posicionesOcupadas.Remove(characterIn);
@@ -345,7 +343,7 @@ public class CreateGrid : MonoBehaviour
                     {
                         if(characterWall.positionInt.x != 12 && characterWall.modo == 0)
                         {
-                            if((characterIn.modo == 0 && characterIn.status < characterWall.status) || characterIn.modo == 1)
+                            if((characterIn.status < characterWall.status) || characterIn.modo > characterWall.modo)
                             {
                                 //Debug.Log("Hola desde" + characterWall.positionInt);
                                 posicionesOcupadas.Remove(characterIn);
