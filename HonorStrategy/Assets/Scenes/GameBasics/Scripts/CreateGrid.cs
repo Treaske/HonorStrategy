@@ -28,6 +28,12 @@ public class CreateGrid : MonoBehaviour
         HandleNewPositionsAll();
     }
 
+    void Update()
+    {
+        HandleCharacterSelection();
+        HandleCharacterMovement();    
+    }
+    
     private void GenerateGrid()
     {
         for (int x = (gridHeight * 2); x > 0; x--)
@@ -85,12 +91,7 @@ public class CreateGrid : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        HandleCharacterSelection();
-        HandleCharacterMovement();
     
-    }
 
     void HandleCharacterSelection()
     {
