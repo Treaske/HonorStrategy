@@ -10,26 +10,22 @@ public class GridCreation : MonoBehaviour
     [SerializeField] Tile[] tiles;
     [SerializeField] GameObject characterPlayer;
     [SerializeField] GameObject characterEnemy;
+    [SerializeField] int totalSoldiers = 20;  // Cambia este valor al número deseado de soldados
 
-    private List<CharInfo> posPlayer = new List<CharInfo>();
-    private List<CharInfo> posEnemy = new List<CharInfo>();
+    public List<CharInfo> posPlayer = new List<CharInfo>();
+    public List<CharInfo> posEnemy = new List<CharInfo>();
 
     static public int gridHeight = 12;
 
     void Start()
     {
-        GenerateGrid();
-        GenerateCharactersPlayer();
-        GenerateCharactersEnemy();
+        //GenerateGrid();
+        //GenerateCharactersPlayer();
+        //GenerateCharactersEnemy();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-    private void GenerateGrid()
+    public void GenerateGrid()
     {
         // creacion de dos grids de 12 de ancho y largo, con la creacion de una linea para separarlos
 
@@ -61,93 +57,202 @@ public class GridCreation : MonoBehaviour
         }
     }
 
-    private void GenerateCharactersPlayer()
+
+    public void GenerateCharactersPlayer()
     {
-        for (int x = 0; x < gridHeight; x++)
+        // codigo que genera un numero de de characters, y los reparte de manera aleatoria
+
+        int remainingSoldiers = totalSoldiers;
+
+        while(remainingSoldiers > 0)
         {
-            // for que recorre una a una las columnas y genera un numero aleatorio de characters
-            int randomNum = Random.Range(0, 9);
-            for (int y = 0; y < randomNum; y++)
+            int aleatorio = Mathf.RoundToInt(Random.Range(0f, 11f));
+
+            GameObject characterObj = Instantiate(characterPlayer, transform);
+            CharInfo playerChar = characterObj.GetComponent<CharInfo>();
+            SpriteRenderer spriteRenderer = characterObj.GetComponent<SpriteRenderer>();
+
+            Vector3Int targetGridPos = new Vector3Int(12, aleatorio, 0);
+
+            while (posPlayer.Any(c => c.positionInt == targetGridPos))
             {
-  
-                GameObject characterObj = Instantiate(characterPlayer, transform);
-                
-                CharInfo playerChar = characterObj.GetComponent<CharInfo>();
-
-                SpriteRenderer spriteRenderer = characterObj.GetComponent<SpriteRenderer>();
-
-                Vector3Int targetGridPos = new Vector3Int(12, x, 0);
-                
-                while (posPlayer.Any(c => c.positionInt == targetGridPos))
-                {
-                    targetGridPos -= new Vector3Int(1, 0, 0);
-                }
-
-                Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(targetGridPos);
-                characterObj.transform.position = playerWorldPosition;
-
-                //calculando el sortingOrder de los sprites para que no den erorres visuales en el isometrico
-                int order = ((12 - x) * 10) + y;
-                
-                spriteRenderer.sortingOrder = order;
-
-                playerChar.positionInt = targetGridPos;
-
-                //datos del charcter, a cambiar cuando haya mas tipos
-                playerChar.colorInt = Random.Range(0, 3);
-                playerChar.damage = 1;
-                playerChar.health = 1;
-                playerChar.modo = 2;
-                playerChar.status = 1;
-
-                posPlayer.Add(playerChar);
-               
+                targetGridPos -= new Vector3Int(1, 0, 0);
             }
-        }
+
+            Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(targetGridPos);
+            characterObj.transform.position = playerWorldPosition;
+
+            //calculando el sortingOrder de los sprites para que no den erorres visuales en el isometrico
+            int order = ((12 - aleatorio) * 10) + targetGridPos.y;                    
+            spriteRenderer.sortingOrder = order;
+            playerChar.positionInt = targetGridPos;
+
+            //datos del charcter, a cambiar cuando haya mas tipos
+            playerChar.positionInt = targetGridPos;
+            playerChar.colorInt = Random.Range(0, 3);
+            playerChar.damage = 1;
+            playerChar.health = 1;
+            playerChar.modo = 2;
+            playerChar.status = 1;
+
+            posPlayer.Add(playerChar);
+            remainingSoldiers--;
+
+        }    
     }
 
-    private void GenerateCharactersEnemy()
+    public void GenerateCharactersEnemy()
     {
-        // misma funcion para el lado contrario
-        for (int x = 0; x < gridHeight; x++)
+        // codigo que genera un numero de de characters, y los reparte de manera aleatoria
+
+        int remainingSoldiers = totalSoldiers;
+
+        while(remainingSoldiers > 0)
         {
-            int randomNum = Random.Range(0, 9);
-            for (int y = 0; y < randomNum; y++)
+            int aleatorio = Mathf.RoundToInt(Random.Range(0f, 11f));
+
+            GameObject characterObj = Instantiate(characterEnemy, transform);
+            CharInfo playerChar = characterObj.GetComponent<CharInfo>();
+            SpriteRenderer spriteRenderer = characterObj.GetComponent<SpriteRenderer>();
+
+            Vector3Int targetGridPos = new Vector3Int(14, aleatorio, 0);
+
+            while (posEnemy.Any(c => c.positionInt == targetGridPos))
             {
-  
-                GameObject characterObj = Instantiate(characterEnemy, transform);
-                
-                CharInfo playerChar = characterObj.GetComponent<CharInfo>();
-
-                SpriteRenderer spriteRenderer = characterObj.GetComponent<SpriteRenderer>();
-
-                Vector3Int targetGridPos = new Vector3Int(14, x, 0);
-                
-                while (posPlayer.Any(c => c.positionInt == targetGridPos))
-                {
-                    targetGridPos += new Vector3Int(1, 0, 0);
-                }
-
-                Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(targetGridPos);
-                characterObj.transform.position = playerWorldPosition;
-
-                //calculando el sortingOrder de los sprites para que no den erorres visuales en el isometrico
-                int order = ((12 - x) * 10) + y;
-                
-                spriteRenderer.sortingOrder = order;
-
-                playerChar.positionInt = targetGridPos;
-
-                //datos del charcter, a cambiar cuando haya mas tipos
-                playerChar.colorInt = Random.Range(0, 3);
-                playerChar.damage = 1;
-                playerChar.health = 1;
-                playerChar.modo = 2;
-                playerChar.status = 1;
-
-                posPlayer.Add(playerChar);
-               
+                targetGridPos += new Vector3Int(1, 0, 0);
             }
+
+            Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(targetGridPos);
+            characterObj.transform.position = playerWorldPosition;
+
+            //calculando el sortingOrder de los sprites para que no den erorres visuales en el isometrico
+            int order = ((12 - aleatorio) * 10) + targetGridPos.y;                    
+            spriteRenderer.sortingOrder = order;
+            playerChar.positionInt = targetGridPos;
+
+            //datos del charcter, a cambiar cuando haya mas tipos
+            playerChar.positionInt = targetGridPos;
+            playerChar.colorInt = Random.Range(0, 3);
+            playerChar.damage = 1;
+            playerChar.health = 1;
+            playerChar.modo = 2;
+            playerChar.status = 1;
+
+            posEnemy.Add(playerChar);
+            remainingSoldiers--;
+
         }
     }
+    // añadir codigo para generar characters diferentes de 1
+
+    
+
 }
+
+/* 
+
+creacion antigua
+
+private void GenerateCharactersPlayer()
+    {
+        // codigo que genera un numero de de characters, y los reparte de manera aleatoria
+
+        int remainingSoldiers = totalSoldiers;
+
+        while(remainingSoldiers > 0)
+        {
+            for (int x = 0; x < gridHeight; x++)
+            {
+                int aleatorio = Mathf.RoundToInt(Random.Range(0f, 1f));
+
+                if(aleatorio == 1)
+                {
+                    GameObject characterObj = Instantiate(characterPlayer, transform);
+                    CharInfo playerChar = characterObj.GetComponent<CharInfo>();
+                    SpriteRenderer spriteRenderer = characterObj.GetComponent<SpriteRenderer>();
+
+                    Vector3Int targetGridPos = new Vector3Int(12, x, 0);
+
+                    while (posPlayer.Any(c => c.positionInt == targetGridPos))
+                    {
+                        targetGridPos -= new Vector3Int(1, 0, 0);
+                    }
+
+                    Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(targetGridPos);
+                    characterObj.transform.position = playerWorldPosition;
+
+                    //datos del charcter, a cambiar cuando haya mas tipos
+                    playerChar.positionInt = targetGridPos;
+                    playerChar.colorInt = Random.Range(0, 3);
+                    playerChar.damage = 1;
+                    playerChar.health = 1;
+                    playerChar.modo = 2;
+                    playerChar.status = 1;
+
+                    posPlayer.Add(playerChar);
+                    remainingSoldiers--;
+
+                }
+            }
+        }    
+    }
+
+
+    private void GenerateCharactersPlayerQ()
+    {
+        int remainingSoldiers = totalSoldiers;
+
+        while (remainingSoldiers > 0)
+        {
+            for (int x = 0; x < gridHeight; x++)
+            {
+               int soldiersInColumn = Random.Range(1, Mathf.Min(remainingSoldiers + 1, 10));
+
+                Debug.Log(" columna: " + soldiersInColumn);
+
+                // for que recorre una a una las columnas y genera un numero aleatorio de characters
+                    
+                for (int y = 0; y < soldiersInColumn; y++)
+                {
+                    Debug.Log(" columna: ");
+
+                    GameObject characterObj = Instantiate(characterPlayer, transform);
+                        
+                    CharInfo playerChar = characterObj.GetComponent<CharInfo>();
+
+                    SpriteRenderer spriteRenderer = characterObj.GetComponent<SpriteRenderer>();
+
+                    Vector3Int targetGridPos = new Vector3Int(12, x, 0);
+                    
+                    while (posPlayer.Any(c => c.positionInt == targetGridPos))
+                    {
+                        targetGridPos -= new Vector3Int(1, 0, 0);
+                    }
+
+                    Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(targetGridPos);
+                    characterObj.transform.position = playerWorldPosition;
+
+                    //calculando el sortingOrder de los sprites para que no den erorres visuales en el isometrico
+                    int order = ((12 - x) * 10) + y;
+                        
+                    spriteRenderer.sortingOrder = order;
+
+                    playerChar.positionInt = targetGridPos;
+
+                    //datos del charcter, a cambiar cuando haya mas tipos
+                    playerChar.colorInt = Random.Range(0, 3);
+                    playerChar.damage = 1;
+                    playerChar.health = 1;
+                    playerChar.modo = 2;
+                    playerChar.status = 1;
+
+                    posPlayer.Add(playerChar);
+                    remainingSoldiers--;
+                    
+                }
+            }
+        }
+    }
+
+   
+    */

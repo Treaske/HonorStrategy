@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public GridCreation gridCreation;
 
     static public int turnosPartida = 3;
 
-    private List<CharInfo> posPlayer = new List<CharInfo>();
-    private List<CharInfo> posEnemy = new List<CharInfo>();
+    private List<CharInfo> playerPos = new List<CharInfo>();
+    private List<CharInfo> enemyPos = new List<CharInfo>();
 
     void Start()
     {
-        // Crear los dos campos para cada jugador llamando a gridCreation
+        //Crear Campo
+        gridCreation.GenerateGrid();
 
-        // guardar las listas de characters que provienen de gridCreation
+        //Crear ejercitos
+        gridCreation.GenerateCharactersPlayer();
+        gridCreation.GenerateCharactersEnemy();
+        
+        //Comprobar posiciones iniciales
 
         //llamar a la comprobacion de posiciones de char1Info
 
@@ -23,6 +29,6 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        //crar una forma de iteracion para los turnos
+        
     }
 }

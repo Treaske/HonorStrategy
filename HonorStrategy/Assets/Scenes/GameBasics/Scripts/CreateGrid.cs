@@ -245,7 +245,7 @@ public class CreateGrid : MonoBehaviour
         }
     }
 
-    void HandleNewPositionsAll()
+    public void HandleNewPositionsAll()
     {
         for (int c = 0; c < 12; c++)
         {
@@ -323,7 +323,7 @@ public class CreateGrid : MonoBehaviour
         HandleNewPositionWall(posicionesOcupadas);
     }
 
-    void HandleNewPositionWall(List<CharInfo> posicionesOcupadas)
+    public void HandleNewPositionWall(List<CharInfo> posicionesOcupadas)
     {
         int orderLayer = 0;
         for (int a = 0; a < 12; a++)
