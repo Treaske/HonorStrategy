@@ -6,24 +6,19 @@ using System.Linq;
 
 public class GridCreation : MonoBehaviour
 {
+    public InitialPosition initialPosition;
+
     [SerializeField] Tilemap tilemap;
     [SerializeField] Tile[] tiles;
     [SerializeField] GameObject characterPlayer;
     [SerializeField] GameObject characterEnemy;
     [SerializeField] int totalSoldiers = 20;  // Cambia este valor al número deseado de soldados
+    public Sprite[] wallSprite;
 
     public List<CharInfo> posPlayer = new List<CharInfo>();
     public List<CharInfo> posEnemy = new List<CharInfo>();
 
     static public int gridHeight = 12;
-
-    void Start()
-    {
-        //GenerateGrid();
-        //GenerateCharactersPlayer();
-        //GenerateCharactersEnemy();
-    }
-
 
     public void GenerateGrid()
     {
@@ -83,7 +78,7 @@ public class GridCreation : MonoBehaviour
             characterObj.transform.position = playerWorldPosition;
 
             //calculando el sortingOrder de los sprites para que no den erorres visuales en el isometrico
-            int order = ((12 - aleatorio) * 10) + targetGridPos.y;                    
+            int order = ((12 - aleatorio) * 10) + (12 - targetGridPos.x);                    
             spriteRenderer.sortingOrder = order;
             playerChar.positionInt = targetGridPos;
 
@@ -126,7 +121,7 @@ public class GridCreation : MonoBehaviour
             characterObj.transform.position = playerWorldPosition;
 
             //calculando el sortingOrder de los sprites para que no den erorres visuales en el isometrico
-            int order = ((12 - aleatorio) * 10) + targetGridPos.y;                    
+            int order = ((12 - aleatorio) * 10) + (12 - targetGridPos.x);                    
             spriteRenderer.sortingOrder = order;
             playerChar.positionInt = targetGridPos;
 
@@ -143,10 +138,13 @@ public class GridCreation : MonoBehaviour
 
         }
     }
-    // añadir codigo para generar characters diferentes de 1
 
-    
-
+    public void HandleNewPositions()
+    {
+        //Comprueba los dos campos
+        initialPosition.HandleNewPositionsPlayer(posPlayer, wallSprite);
+        initialPosition.HandleNewPositionsEnemy(posEnemy, wallSprite);
+    }
 }
 
 /* 
