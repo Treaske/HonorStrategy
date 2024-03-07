@@ -136,7 +136,7 @@ public class InitialPosition : MonoBehaviour
 
                                 for(int i = l; i > (13 - sameLineCharacters.Count); i--)
                                 {
-                                    Debug.Log("Hola desde if: " + characterWall.positionInt);
+                                    //Debug.Log("Hola desde if: " + characterWall.positionInt);
                                     characterWall = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(i - 1, a, 0));;
                                     posicionesOcupadas.Remove(characterWall);
                                     characterWall.positionInt.x += 1;
@@ -244,30 +244,31 @@ public class InitialPosition : MonoBehaviour
 
             if (sameLineCharacters.Count > 0)
             {
-                for (int l = 12; l < (12 + sameLineCharacters.Count); l++)
+                for (int l = (14 + sameLineCharacters.Count); l > 14; l--)
                 {
                     CharInfo characterWall = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l, a, 0));;
-                    CharInfo characterIn = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l + 1, a, 0));;
+                    CharInfo characterIn = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(l - 1, a, 0));;
 
                     if (characterWall != null && characterIn != null)
                     {
-                        if(characterWall.positionInt.x != 12 && characterWall.modo == 0)
+                        if(characterWall.positionInt.x != 14 && characterWall.modo == 0)
                         {
-                            //comprobacion para que el se coloce segun el modo (muro, ataque, normal)
-                            if((characterIn.status > characterWall.status) || characterIn.modo < characterWall.modo)
+                            //Si el character de delante tiene un modo mayor o un estatus menor se cambiara hacia detras
+                            if((characterIn.status < characterWall.status) || characterIn.modo > characterWall.modo)
                             {
+                                //Debug.Log("Hola desde if: " + characterWall.positionInt);
                                 posicionesOcupadas.Remove(characterIn);
                                 posicionesOcupadas.Remove(characterWall);
 
                                 characterIn.positionInt.x = l;
                                 Vector3 posicionCharacter = characterIn.transform.position;
-                                characterIn.transform.position = new Vector3(posicionCharacter.x - 0.5f, posicionCharacter.y - 0.25f, posicionCharacter.z);;
+                                characterIn.transform.position = new Vector3(posicionCharacter.x + 0.5f, posicionCharacter.y + 0.25f, posicionCharacter.z);;
                                 orderLayer = ((12 - (characterIn.positionInt.y)) * 10) + (12 -(characterIn.positionInt.x));
                                 characterIn.GetComponent<SpriteRenderer>().sortingOrder = orderLayer;
 
-                                characterWall.positionInt.x = l + 1;
+                                characterWall.positionInt.x = l - 1;
                                 posicionCharacter = characterWall.transform.position;
-                                characterWall.transform.position = new Vector3(posicionCharacter.x + 0.5f, posicionCharacter.y + 0.25f, posicionCharacter.z);;
+                                characterWall.transform.position = new Vector3(posicionCharacter.x - 0.5f, posicionCharacter.y - 0.25f, posicionCharacter.z);;
                                 orderLayer = ((12 - (characterWall.positionInt.y)) * 10) + (12 -(characterWall.positionInt.x));
                                 characterWall.GetComponent<SpriteRenderer>().sortingOrder = orderLayer;
 
@@ -277,21 +278,20 @@ public class InitialPosition : MonoBehaviour
                                 //Comprobaciones para sumar los muros si son del mismo tipo
                             } else if ((characterIn.modo == 0 && characterIn.status == characterWall.status) && characterIn.status != 2)
                             {
+                                //Debug.Log("Contador : " + (14 + sameLineCharacters.Count));
                                 posicionesOcupadas.Remove(characterWall);
+                                Destroy(characterWall.gameObject);
 
                                 characterIn.status++;
                                 characterIn.GetComponent<SpriteRenderer>().sprite = wallSprite[characterIn.status];
 
-                                Destroy(characterWall.gameObject);
-
-                                for(int i = l; i > (13 - sameLineCharacters.Count); i--)
+                                for(int i = l; i < (13 + sameLineCharacters.Count); i++)
                                 {
-                                    Debug.Log("Hola desde if: " + characterWall.positionInt);
-                                    characterWall = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(i - 1, a, 0));;
+                                    characterWall = sameLineCharacters.FirstOrDefault(c => c.positionInt == new Vector3Int(i + 1, a, 0));;
                                     posicionesOcupadas.Remove(characterWall);
-                                    characterWall.positionInt.x += 1;
+                                    characterWall.positionInt.x -= 1;
                                     Vector3 posicionCharacter = characterWall.transform.position;
-                                    characterWall.transform.position = new Vector3(posicionCharacter.x + 0.5f, posicionCharacter.y + 0.25f, posicionCharacter.z);;
+                                    characterWall.transform.position = new Vector3(posicionCharacter.x - 0.5f, posicionCharacter.y - 0.25f, posicionCharacter.z);;
                                     posicionesOcupadas.Add(characterWall);
                                     
                                 }

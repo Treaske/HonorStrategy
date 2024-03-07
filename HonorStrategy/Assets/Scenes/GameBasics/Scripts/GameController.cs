@@ -30,8 +30,14 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
+        
         HandleCharacterSelection();
-        HandleCharacterMovement();
+        //Codigo para los turnos
+        if(turnosPartida != 0 && selectedCharacter)
+        {
+            HandleCharacterMovement();
+        } 
+    
     }
 
     void HandleCharacterSelection()
@@ -99,14 +105,11 @@ public class GameController : MonoBehaviour
 
                     gridCreation.posPlayer.Remove(selectedCharacter);
                     gridCreation.posPlayer.Add(newCharac);
-                }
-                if(selectedCharacter != null)
-                {
-                    selectedCharacter.CheckNewPosition(gridCreation.posPlayer, selectedCharacter);
-                    selectedCharacter = null;
+
+                    turnosPartida--;
+                    Debug.Log("Turnos: " + turnosPartida);
                 }
             }
-            
         }
     }
 }
