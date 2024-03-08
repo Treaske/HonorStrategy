@@ -3,7 +3,7 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 [Ll]ibrary/
-/[Tt]emp/
+[Tt]emp/
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
@@ -70,7 +70,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
-HonorStrategy/Temp/FSTimeGet-02c3f8b20c8d3494a977392eae995604
+HonorStrategy/Temp/
 HonorStrategy/Temp/FSTimeGet-31c0b49bff688274bae8c635cd054af3
 HonorStrategy/Temp/FSTimeGet-3c8d623e4a6388540b870af1abdf0c48
 HonorStrategy/Temp/FSTimeGet-450624765602b3e449a39c40f9d39b41
