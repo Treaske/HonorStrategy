@@ -8,8 +8,9 @@ public class GameController : MonoBehaviour
 {    
     [SerializeField] Tilemap tilemap;
     public GridCreation gridCreation;
-    static public int turnosPartida = 3;
+    static public int turnosPartida = 5;
     public CharInfo selectedCharacter;
+    public SelectedTile selectedTile;
 
     void Start()
     {
@@ -36,6 +37,7 @@ public class GameController : MonoBehaviour
         if(turnosPartida != 0 && selectedCharacter)
         {
             HandleCharacterMovement();
+            selectedCharacter.CheckNewPosition(gridCreation.posPlayer, selectedCharacter);
         } 
     
     }
@@ -108,6 +110,28 @@ public class GameController : MonoBehaviour
 
                     turnosPartida--;
                     Debug.Log("Turnos: " + turnosPartida);
+
+                    /*
+                    Vector3 mousePos = gameObject.transform.position;
+                    Vector3Int gridPos = tilemap.WorldToCell(mousePos);
+
+                    List<CharInfo> characInColumn = gridCreation.posPlayer
+                        .Where(c => c.positionInt.y == gridPos.y)
+                        .OrderBy(c => c.positionInt.x)
+                        .ToList();
+
+                    if(characInColumn.Count > 0)
+                    {
+                        mousePos = characInColumn[0].transform.position;
+                        mousePos.z = 1;
+
+                        SelectedTile selectedTile = GameObject.FindObjectsOfType<SelectedTile>()
+                            .FirstOrDefault(tile => tile.transform.position == mousePos);
+
+                    selectedTile.HideTile();
+                    }
+                    */
+                    
                 }
             }
         }

@@ -15,7 +15,8 @@ public class GridCreation : MonoBehaviour
     [SerializeField] int totalSoldiers = 20;  // Cambia este valor al número deseado de soldados
     public Sprite[] wallSprite;
     public OverTile overTile;
-    public GameObject overLayTile;
+    public SelectedTile selectTile;
+    
 
     public List<CharInfo> posPlayer = new List<CharInfo>();
     public List<CharInfo> posEnemy = new List<CharInfo>();
@@ -52,23 +53,27 @@ public class GridCreation : MonoBehaviour
                 tilemap.SetTile(new Vector3Int(x, y, 0), randomTile);
             }
         }
-
        
         for (int y = 0; y < gridHeight; y++)
         {
           
-            for (int x =0; x < gridHeight*2; x++)
+            for (int x =0; x < ((gridHeight * 2) + 2); x++)
             {
                 var tileLocation = new Vector3Int(x, y, 0);
 
                 if (tilemap.HasTile(tileLocation))
-                {
-                    Debug.Log("hila");
-                    var overlayTile = Instantiate(overTile, overLayTile.transform);
+                {                    
+                    var overlayTile = Instantiate(overTile, transform);
                     var cellWorldPosition = tilemap.GetCellCenterWorld(tileLocation);
 
                     overlayTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z+1);
-                    overlayTile.GetComponent<SpriteRenderer>().sortingOrder = tilemap.GetComponent<TilemapRenderer>().sortingOrder;
+                    overlayTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+                    var selectionTile = Instantiate(selectTile, transform);
+                    cellWorldPosition = tilemap.GetCellCenterWorld(tileLocation);
+
+                    selectionTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z+1);
+                    selectionTile.GetComponent<SpriteRenderer>().sortingOrder = 2;
                 }
             }
         }
@@ -168,6 +173,7 @@ public class GridCreation : MonoBehaviour
         initialPosition.HandleNewPositionsEnemy(posEnemy, wallSprite);
     }
 }
+
 
 /* 
 

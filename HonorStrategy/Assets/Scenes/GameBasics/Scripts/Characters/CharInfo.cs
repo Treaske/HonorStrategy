@@ -45,7 +45,6 @@ public class CharInfo : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-
             CharInfo characterAp = selectedCharacter;
 
             List<CharInfo> matchedTilesWall = new List<CharInfo>();
@@ -57,9 +56,6 @@ public class CharInfo : MonoBehaviour
                 .Where(c => c.positionInt.x == selectedCharacter.positionInt.x)
                 .ToList();
 
-
-
-           
             //------------------------------------------------------creacion de wall-----------------------------------------------------------------------------------------------------
             for( int y = selectedCharacter.positionInt.y; y < sameLineCharacters.Count; y++)
             {
@@ -149,9 +145,7 @@ public class CharInfo : MonoBehaviour
                 }
                 HandleNewPositionAttack(posicionesOcupadas, matchedTilesAtack);
             }
-
         }
-    
     }
 
     void HandleNewPositionWall(List<CharInfo> posicionesOcupadas)
