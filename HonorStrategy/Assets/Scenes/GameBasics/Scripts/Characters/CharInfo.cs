@@ -145,7 +145,9 @@ public class CharInfo : MonoBehaviour
                 }
                 HandleNewPositionAttack(posicionesOcupadas, matchedTilesAtack);
             }
+
         }
+        
     }
 
     void HandleNewPositionWall(List<CharInfo> posicionesOcupadas)
@@ -224,7 +226,7 @@ public class CharInfo : MonoBehaviour
     {
         
         CharInfo characterAp = matchedTilesAtack[2];
-        Debug.Log("Hola desde: " + matchedTilesAtack[2].positionInt);
+        //Debug.Log("Hola desde: " + matchedTilesAtack[2].positionInt);
 
         List<CharInfo> sameColumnCharacters = posicionesOcupadas
             .Where(c => c.positionInt.y == matchedTilesAtack[2].positionInt.y)
@@ -233,7 +235,7 @@ public class CharInfo : MonoBehaviour
         for (int i = (12 - (sameColumnCharacters.Count - 3)); i < 12; i++)
         {
             characterAp = posicionesOcupadas.FirstOrDefault(c => c.positionInt == new Vector3Int(i + 1, characterAp.positionInt.y, characterAp.positionInt.z));;
-            Debug.Log("Hola desde for: " + characterAp.positionInt);
+            //Debug.Log("Hola desde for: " + characterAp.positionInt);
             if(characterAp != null && characterAp.modo > matchedTilesAtack[2].modo)
             {
                 posicionesOcupadas.Remove(characterAp);

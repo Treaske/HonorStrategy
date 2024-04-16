@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     public GridCreation gridCreation;
     static public int turnosPartida = 5;
     public CharInfo selectedCharacter;
-    public SelectedTile selectedTile;
+    public SelectedTile selected;
 
     void Start()
     {
@@ -37,9 +37,9 @@ public class GameController : MonoBehaviour
         if(turnosPartida != 0 && selectedCharacter)
         {
             HandleCharacterMovement();
-            selectedCharacter.CheckNewPosition(gridCreation.posPlayer, selectedCharacter);
+            
         } 
-    
+        
     }
 
     void HandleCharacterSelection()
@@ -110,27 +110,27 @@ public class GameController : MonoBehaviour
 
                     turnosPartida--;
                     Debug.Log("Turnos: " + turnosPartida);
+                    selectedCharacter.CheckNewPosition(gridCreation.posPlayer, selectedCharacter);
+                    selectedCharacter = null;
 
-                    /*
-                    Vector3 mousePos = gameObject.transform.position;
-                    Vector3Int gridPos = tilemap.WorldToCell(mousePos);
+                    
+                    //------- Borrar selectedTile para que no de errores visuales
 
                     List<CharInfo> characInColumn = gridCreation.posPlayer
-                        .Where(c => c.positionInt.y == gridPos.y)
+                        .Where(c => c.positionInt.y == targetGridPos.y)
                         .OrderBy(c => c.positionInt.x)
                         .ToList();
+                    
+                    mousePos = characInColumn[1].transform.position;
+                    mousePos.z = 1;
 
-                    if(characInColumn.Count > 0)
-                    {
-                        mousePos = characInColumn[0].transform.position;
-                        mousePos.z = 1;
+                    SelectedTile selectedTiles = GameObject.FindObjectsOfType<SelectedTile>()
+                        .FirstOrDefault(tile => tile.transform.position == mousePos);
 
-                        SelectedTile selectedTile = GameObject.FindObjectsOfType<SelectedTile>()
-                            .FirstOrDefault(tile => tile.transform.position == mousePos);
+                    selected.HideTile(selectedTiles);
+                    //Debug.Log("Posicion mousePos GameController: " + mousePos);
+                    //Debug.Log("Posicion selectedTile GameController: " + selectedTiles.transform.position);
 
-                    selectedTile.HideTile();
-                    }
-                    */
                     
                 }
             }

@@ -419,6 +419,7 @@ MonoBehaviour:
   tilemap: {fileID: 751381350}
   gridCreation: {fileID: 1196736397}
   selectedCharacter: {fileID: 0}
+  selected: {fileID: 484570030}
 --- !u!1001 &1999153194
 PrefabInstance:
   m_ObjectHideFlags: 0
