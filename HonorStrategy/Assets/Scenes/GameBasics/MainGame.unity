@@ -420,6 +420,7 @@ MonoBehaviour:
   gridCreation: {fileID: 1196736397}
   selectedCharacter: {fileID: 0}
   selected: {fileID: 484570030}
+  selectedOver: {fileID: 868732608}
 --- !u!1001 &1999153194
 PrefabInstance:
   m_ObjectHideFlags: 0

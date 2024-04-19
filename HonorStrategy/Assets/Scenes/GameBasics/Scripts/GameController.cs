@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
     static public int turnosPartida = 5;
     public CharInfo selectedCharacter;
     public SelectedTile selected;
+    public OverTile selectedOver;
+    OverTile overTiles;
 
     void Start()
     {
@@ -25,21 +27,16 @@ public class GameController : MonoBehaviour
         gridCreation.HandleNewPositions();
 
         //llamar a la comprobacion de posiciones de char1Info
-
     }
-
 
     void Update()
     {
-        
         HandleCharacterSelection();
         //Codigo para los turnos
         if(turnosPartida != 0 && selectedCharacter)
         {
             HandleCharacterMovement();
-            
         } 
-        
     }
 
     void HandleCharacterSelection()
@@ -58,6 +55,17 @@ public class GameController : MonoBehaviour
             if (characInColumn.Count > 0)
             {
                 selectedCharacter = characInColumn.First();
+
+                //Mantener el selectedTile pintado para que se entienda que charac se va a mover
+                mousePos = characInColumn[0].transform.position;
+                mousePos.z = 1;
+
+                overTiles = GameObject.FindObjectsOfType<OverTile>()
+                    .FirstOrDefault(tile => tile.transform.position == mousePos);
+
+                overTiles.characSelected = 1;    
+
+                selectedOver.ShowTileOver(overTiles);
             }
         }
         
@@ -114,24 +122,30 @@ public class GameController : MonoBehaviour
                     selectedCharacter = null;
 
                     
-                    //------- Borrar selectedTile para que no de errores visuales
-
+                    //------- Borrar overTile para que no de errores visuales
+                    
                     List<CharInfo> characInColumn = gridCreation.posPlayer
                         .Where(c => c.positionInt.y == targetGridPos.y)
                         .OrderBy(c => c.positionInt.x)
                         .ToList();
-                    
-                    mousePos = characInColumn[1].transform.position;
-                    mousePos.z = 1;
 
-                    SelectedTile selectedTiles = GameObject.FindObjectsOfType<SelectedTile>()
-                        .FirstOrDefault(tile => tile.transform.position == mousePos);
+                    if(characInColumn.Count > 1)
+                    {
+                        mousePos = characInColumn[1].transform.position;
+                        mousePos.z = 1;
 
-                    selected.HideTile(selectedTiles);
-                    //Debug.Log("Posicion mousePos GameController: " + mousePos);
-                    //Debug.Log("Posicion selectedTile GameController: " + selectedTiles.transform.position);
+                        SelectedTile selectedTiles = GameObject.FindObjectsOfType<SelectedTile>()
+                            .FirstOrDefault(tile => tile.transform.position == mousePos);
 
-                    
+                        selected.HideTile(selectedTiles);
+
+                        //Borrar el selectedTile pintado 
+
+                        overTiles.characSelected = 0;    
+
+                        selectedOver.HideTileOver(overTiles);
+                    } 
+  
                 }
             }
         }

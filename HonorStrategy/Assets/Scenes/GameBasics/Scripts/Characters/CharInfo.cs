@@ -22,7 +22,6 @@ public class CharInfo : MonoBehaviour
 
     void Start()
     {
-        //Debug.Log("Hola desde" + colorInt);
         if(colorInt <= 2)
         {
             GetComponent<SpriteRenderer>().sprite = sprites[colorInt];
