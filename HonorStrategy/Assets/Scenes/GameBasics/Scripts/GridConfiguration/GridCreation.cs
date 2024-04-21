@@ -74,6 +74,8 @@ public class GridCreation : MonoBehaviour
 
                     selectionTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z+1);
                     selectionTile.GetComponent<SpriteRenderer>().sortingOrder = 2;
+                    Vector3Int targetPosition = new Vector3Int(x, y, 0);
+                    selectionTile.positionInt = targetPosition;
                 }
             }
         }

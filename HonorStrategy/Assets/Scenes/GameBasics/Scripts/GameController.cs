@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     public SelectedTile selected;
     public OverTile selectedOver;
     OverTile overTiles;
+    public int charSelection = 0;
 
     void Start()
     {
@@ -41,7 +42,7 @@ public class GameController : MonoBehaviour
 
     void HandleCharacterSelection()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && charSelection == 0)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
@@ -63,7 +64,8 @@ public class GameController : MonoBehaviour
                 overTiles = GameObject.FindObjectsOfType<OverTile>()
                     .FirstOrDefault(tile => tile.transform.position == mousePos);
 
-                overTiles.characSelected = 1;    
+                overTiles.tileSelected = 1;    
+                charSelection = 1; 
 
                 selectedOver.ShowTileOver(overTiles);
             }
@@ -141,10 +143,10 @@ public class GameController : MonoBehaviour
 
                         //Borrar el selectedTile pintado 
 
-                        overTiles.characSelected = 0;    
-
-                        selectedOver.HideTileOver(overTiles);
+                        overTiles.tileSelected = 0;    
                     } 
+                    selectedOver.HideTileOver(overTiles);
+                    charSelection = 0;
   
                 }
             }
