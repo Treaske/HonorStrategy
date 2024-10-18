@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour
         //Comprobar posiciones iniciales
         gridCreation.HandleNewPositions();
 
+        //Crear campo dado la vuelta
+        gridCreation.DuplicateGrid();
+
         //llamar a la comprobacion de posiciones de char1Info
     }
 

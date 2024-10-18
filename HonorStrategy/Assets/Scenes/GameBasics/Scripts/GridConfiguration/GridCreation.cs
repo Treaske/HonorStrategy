@@ -7,8 +7,8 @@ using System.Linq;
 public class GridCreation : MonoBehaviour
 {
     public InitialPosition initialPosition;
-
-    [SerializeField] Tilemap tilemap;
+    [SerializeField] Tilemap campoPropio;
+    [SerializeField] Tilemap campoRival;
     [SerializeField] Tile[] tiles;
     [SerializeField] GameObject characterPlayer;
     [SerializeField] GameObject characterEnemy;
@@ -32,7 +32,7 @@ public class GridCreation : MonoBehaviour
             for (int y = 0; y < gridHeight; y++)
             {
                 var randomTile = tiles[Random.Range(0, tiles.Length)];
-                tilemap.SetTile(new Vector3Int(x, y, 0), randomTile);
+                campoPropio.SetTile(new Vector3Int(x, y, 0), randomTile);
             }
         }
 
@@ -40,7 +40,7 @@ public class GridCreation : MonoBehaviour
 
         for (int y = 0; y < (gridHeight - 1); y++)
         {   
-            tilemap.SetTile(new Vector3Int(gridHeight, y, 0), tiles[0]);
+            campoPropio.SetTile(new Vector3Int(gridHeight, y, 0), tiles[0]);
         }
 
         gridHeight -= 1;
@@ -50,7 +50,7 @@ public class GridCreation : MonoBehaviour
             for (int y = 0; y < (gridHeight); y++)
             {
                 var randomTile = tiles[Random.Range(0, tiles.Length)];
-                tilemap.SetTile(new Vector3Int(x, y, 0), randomTile);
+                campoPropio.SetTile(new Vector3Int(x, y, 0), randomTile);
             }
         }
        
@@ -61,16 +61,16 @@ public class GridCreation : MonoBehaviour
             {
                 var tileLocation = new Vector3Int(x, y, 0);
 
-                if (tilemap.HasTile(tileLocation))
+                if (campoPropio.HasTile(tileLocation))
                 {                    
                     var overlayTile = Instantiate(overTile, transform);
-                    var cellWorldPosition = tilemap.GetCellCenterWorld(tileLocation);
+                    var cellWorldPosition = campoPropio.GetCellCenterWorld(tileLocation);
 
                     overlayTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z+1);
                     overlayTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
                     var selectionTile = Instantiate(selectTile, transform);
-                    cellWorldPosition = tilemap.GetCellCenterWorld(tileLocation);
+                    cellWorldPosition = campoPropio.GetCellCenterWorld(tileLocation);
 
                     selectionTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z+1);
                     selectionTile.GetComponent<SpriteRenderer>().sortingOrder = 2;
@@ -79,6 +79,55 @@ public class GridCreation : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void DuplicateGrid()
+    {
+        for (int y = 0; y < (gridHeight); y++)
+        {   
+            campoRival.SetTile(new Vector3Int(gridHeight + 1, y + 13, 0), tiles[0]);
+        }
+
+
+        //Pruebas para encontrar la posicion de los tiles
+        //campoRival.SetTile(new Vector3Int(13, 13, 0), tiles[0]);
+        //campoPropio.SetTile(new Vector3Int(14, 13, 0), tiles[1]);
+        //campoPropio.SetTile(new Vector3Int(gridHeight, 14, 0), tiles[1]);
+        //var tileRan = new Vector3Int(12, 11, 0);
+        //campoPropio.SetTile(new Vector3Int(x, y, 0), randomTile);
+        //campoRival.SetTile(new Vector3Int(15, 13, 0), campoPropio.GetTile(tileRan));   
+
+
+        int apoyoX = 14; //variables para recorrer el tilemap al contrario y asi poder dar la vuelta al grid
+        int apoyoY = 11;
+
+        for (int x = gridHeight; x > 0; x--)
+        {
+            for (int y = gridHeight + 1; y < (gridHeight * 2) + 1; y++)
+            {
+                var tileColor = new Vector3Int(apoyoX, apoyoY, 0);
+                campoRival.SetTile(new Vector3Int(x, y, 0), campoPropio.GetTile(tileColor));
+                apoyoY -= 1;
+            }
+            apoyoX += 1;
+            apoyoY = 11;
+        }   
+
+        apoyoX = 12;
+        apoyoY = 11;
+
+        gridHeight += 1;
+        for (int x = gridHeight + 1; x < (gridHeight * 2); x++)
+        {
+            for (int y = gridHeight; y < (gridHeight * 2) + 1; y++)
+            {
+                var tileColor = new Vector3Int(apoyoX, apoyoY, 0);
+                campoRival.SetTile(new Vector3Int(x, y, 0), campoPropio.GetTile(tileColor));
+                apoyoY -= 1;
+            }
+            apoyoX -= 1;
+            apoyoY = 11;
+        }              
     }
 
 
@@ -103,7 +152,7 @@ public class GridCreation : MonoBehaviour
                 targetGridPos -= new Vector3Int(1, 0, 0);
             }
 
-            Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(targetGridPos);
+            Vector3 playerWorldPosition = campoPropio.GetCellCenterWorld(targetGridPos);
             characterObj.transform.position = playerWorldPosition;
 
             //calculando el sortingOrder de los sprites para que no den erorres visuales en el isometrico
@@ -146,7 +195,7 @@ public class GridCreation : MonoBehaviour
                 targetGridPos += new Vector3Int(1, 0, 0);
             }
 
-            Vector3 playerWorldPosition = tilemap.GetCellCenterWorld(targetGridPos);
+            Vector3 playerWorldPosition = campoPropio.GetCellCenterWorld(targetGridPos);
             characterObj.transform.position = playerWorldPosition;
 
             //calculando el sortingOrder de los sprites para que no den erorres visuales en el isometrico
