@@ -155,6 +155,7 @@ public class CharInfo : MonoBehaviour
         for (int a = 0; a < 12; a++)
         {
 
+            //Comprobamos columna entera para saber si hay dos muros que puedan unirse y mejorarse
             List<CharInfo> sameLineCharacters = posicionesOcupadas
                 .Where(c => c.positionInt.y == a)
                 .ToList();

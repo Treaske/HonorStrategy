@@ -21,6 +21,10 @@ public class GridCreation : MonoBehaviour
     public List<CharInfo> posPlayer = new List<CharInfo>();
     public List<CharInfo> posEnemy = new List<CharInfo>();
 
+    //[SerializeField] Tilemap dupPlayer;
+    public List<CharInfo> dupPlayer = new List<CharInfo>();
+    public List<CharInfo> dupEnemy = new List<CharInfo>();
+
     static public int gridHeight = 12;
 
     public void GenerateGrid()
@@ -160,7 +164,7 @@ public class GridCreation : MonoBehaviour
             spriteRenderer.sortingOrder = order;
             playerChar.positionInt = targetGridPos;
 
-            //datos del charcter, a cambiar cuando haya mas tipos
+            //datos del character, a cambiar cuando haya mas tipos
             playerChar.positionInt = targetGridPos;
             playerChar.colorInt = Random.Range(0, 3);
             playerChar.damage = 1;
@@ -214,6 +218,118 @@ public class GridCreation : MonoBehaviour
             posEnemy.Add(playerChar);
             remainingSoldiers--;
 
+        }
+    }
+
+    public void CharacPlayerDup()
+    {
+        //Metodo para crear el ejercito del jugador desde la vista del enemigo
+
+        CharInfo playerChar = posPlayer[0];
+
+        int apoyoX = 14; //variables para recorrer el tilemap al contrario y asi poder dar la vuelta al grid
+        int apoyoY = 24;
+
+        for (int x = 12; x > 0; x--)
+        {
+            for (int y = 0; y < 12; y++)
+            {
+                CharInfo characterAp = posPlayer.FirstOrDefault(c => c.positionInt == new Vector3Int(x, y, 0));;
+                
+                if (characterAp != null)
+                {  
+                    GameObject characterObj = Instantiate(characterEnemy, transform);
+                    CharInfo dupChar = characterObj.GetComponent<CharInfo>();
+                    SpriteRenderer spriteRenderer = characterObj.GetComponent<SpriteRenderer>();
+                    Vector3Int targetGridPos = new Vector3Int(0, 0, 0);
+
+                    int index = posPlayer.IndexOf(characterAp);
+                
+                    playerChar = posPlayer[index];
+                    targetGridPos = playerChar.positionInt;
+                    //Debug.Log("Posicion" + x + ": " + targetGridPos);
+
+                    dupChar.positionInt = playerChar.positionInt;
+                    dupChar.colorInt = playerChar.colorInt;
+                    dupChar.damage = playerChar.damage;
+                    dupChar.health = playerChar.health;
+                    dupChar.modo = playerChar.modo;
+                    dupChar.status = playerChar.status;
+
+                    targetGridPos.Set(apoyoX, apoyoY, (10 - y));
+                    //Debug.Log("numero X: " + x);
+                    //Debug.Log("Posicion" + x + ": " + targetGridPos);
+
+                    Vector3 playerWorldPosition = campoPropio.GetCellCenterWorld(targetGridPos);
+                    characterObj.transform.position = playerWorldPosition;
+
+                    dupPlayer.Add(dupChar);
+
+                    if (dupChar.status == 2)
+                    {
+                        characterObj.GetComponent<SpriteRenderer>().sprite = wallSprite[dupChar.status];
+                    }
+                }
+                apoyoY -= 1;
+            }
+            apoyoY = 24;
+            apoyoX += 1;
+        }
+    }
+
+    public void CharacEnemyDup()
+    {
+        //Metodo para crear el ejercito del enemigo desde la vista del enemigo
+
+         CharInfo playerChar = posEnemy[0];
+
+        int apoyoX = 12; //variables para recorrer el tilemap al contrario y asi poder dar la vuelta al grid
+        int apoyoY = 13;
+
+        for (int x = 14; x < 25; x++) //vigilar si con 25 vale para toda la columna
+        {
+            for (int y = 11; y > 0; y--)
+            {
+                CharInfo characterAp = posEnemy.FirstOrDefault(c => c.positionInt == new Vector3Int(x, y, 0));;
+                //Debug.Log("numero X: " + characterAp.positionInt);
+                if (characterAp != null)
+                {  
+                    GameObject characterObj = Instantiate(characterPlayer, transform);
+                    CharInfo dupChar = characterObj.GetComponent<CharInfo>();
+                    SpriteRenderer spriteRenderer = characterObj.GetComponent<SpriteRenderer>();
+                    Vector3Int targetGridPos = new Vector3Int(0, 0, 0);
+
+                    int index = posEnemy.IndexOf(characterAp);
+                
+                    playerChar = posEnemy[index];
+                    targetGridPos = playerChar.positionInt;
+                    //Debug.Log("Posicion" + x + ": " + targetGridPos);
+
+                    dupChar.positionInt = playerChar.positionInt;
+                    dupChar.colorInt = playerChar.colorInt;
+                    dupChar.damage = playerChar.damage;
+                    dupChar.health = playerChar.health;
+                    dupChar.modo = playerChar.modo;
+                    dupChar.status = playerChar.status;
+
+                    targetGridPos.Set(apoyoX, apoyoY, (10 - y));
+                    Debug.Log("numero X: " + x);
+                    Debug.Log("Posicion" + x + ": " + targetGridPos);
+
+                    Vector3 playerWorldPosition = campoPropio.GetCellCenterWorld(targetGridPos);
+                    characterObj.transform.position = playerWorldPosition;
+
+                    dupEnemy.Add(dupChar);
+
+                    if (dupChar.status == 2)
+                    {
+                        characterObj.GetComponent<SpriteRenderer>().sprite = wallSprite[dupChar.status];
+                    }
+                }
+                apoyoY += 1;
+            }
+            apoyoY = 13;
+            apoyoX -= 1;
         }
     }
 

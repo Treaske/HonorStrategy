@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -288,7 +287,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialPosition: {fileID: 1196736398}
-  tilemap: {fileID: 751381350}
+  campoPropio: {fileID: 751381350}
+  campoRival: {fileID: 751381350}
   tiles:
   - {fileID: 11400000, guid: 1c2ddd3cb7cc37246a6695b5bb6f97ba, type: 2}
   - {fileID: 11400000, guid: c2952fe4b2f16484aba599441ab3d4dc, type: 2}

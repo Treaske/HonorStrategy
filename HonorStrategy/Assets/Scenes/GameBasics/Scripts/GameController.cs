@@ -30,6 +30,10 @@ public class GameController : MonoBehaviour
         //Crear campo dado la vuelta
         gridCreation.DuplicateGrid();
 
+        //Generar ejercitos dados la vuelta
+        gridCreation.CharacPlayerDup();
+        gridCreation.CharacEnemyDup();
+
         //llamar a la comprobacion de posiciones de char1Info
     }
 
