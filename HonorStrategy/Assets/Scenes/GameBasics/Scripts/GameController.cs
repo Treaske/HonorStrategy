@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {    
@@ -14,6 +15,10 @@ public class GameController : MonoBehaviour
     public OverTile selectedOver;
     OverTile overTiles;
     public int charSelection = 0;
+    public TMP_Text textoTurno;
+    public TMP_Text textoMovimientos;
+    public int textTurn;
+
 
     void Start()
     {
@@ -34,6 +39,11 @@ public class GameController : MonoBehaviour
         gridCreation.CharacPlayerDup();
         gridCreation.CharacEnemyDup();
 
+        textTurn = 0;
+
+        textoMovimientos.text = "Movimientos: " + turnosPartida;
+        textoTurno.text = "Turno: " + textTurn;
+
         //llamar a la comprobacion de posiciones de char1Info
     }
 
@@ -44,6 +54,10 @@ public class GameController : MonoBehaviour
         if(turnosPartida != 0 && selectedCharacter)
         {
             HandleCharacterMovement();
+
+            //Mostrar por pantalla en numero del turno que se encuentra la partida y los movimientos que te quedan
+            textoMovimientos.text = "Movimientos: " + turnosPartida;
+            textoTurno.text = "Turno: " + textTurn;
         } 
     }
 
@@ -88,7 +102,10 @@ public class GameController : MonoBehaviour
             {
                 Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mousePos.z = 0;
-                Vector3Int targetGridPos = tilemap.WorldToCell(mousePos);
+                Vector3Int targetGridPos = tilemap.WorldToCell(mousePos);`
+
+                //buscar manera de que seleccione los dos characters, tanto el de la vista del jugador como la del rival
+                //mover todo este codigo a un script a parte donde  se maneje todo el movimiento de los personajes
 
                 if((targetGridPos.y != selectedCharacter.positionInt.y) && tilemap.HasTile(targetGridPos))
                 {
