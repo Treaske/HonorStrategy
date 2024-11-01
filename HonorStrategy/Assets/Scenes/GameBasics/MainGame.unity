@@ -497,7 +497,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c2952fe4b2f16484aba599441ab3d4dc, type: 2}
   characterPlayer: {fileID: 7681669696623389386, guid: 764311a9d09c53a458b40ab9c305201c, type: 3}
   characterEnemy: {fileID: 6034313690513803979, guid: a8ce77086b9521645bb12c91f8d0222c, type: 3}
-  totalSoldiers: 30
+  totalSoldiers: 70
   wallSprite:
   - {fileID: -668207340, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}
   - {fileID: -1979582609, guid: 3a3177eb2ba32ac4da3aa406c8cf16bb, type: 3}

@@ -102,7 +102,7 @@ public class GameController : MonoBehaviour
             {
                 Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mousePos.z = 0;
-                Vector3Int targetGridPos = tilemap.WorldToCell(mousePos);`
+                Vector3Int targetGridPos = tilemap.WorldToCell(mousePos);
 
                 //buscar manera de que seleccione los dos characters, tanto el de la vista del jugador como la del rival
                 //mover todo este codigo a un script a parte donde  se maneje todo el movimiento de los personajes

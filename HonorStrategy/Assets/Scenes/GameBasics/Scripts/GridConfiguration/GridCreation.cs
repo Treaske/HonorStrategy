@@ -263,6 +263,20 @@ public class GridCreation : MonoBehaviour
                     Vector3 playerWorldPosition = campoPropio.GetCellCenterWorld(targetGridPos);
                     characterObj.transform.position = playerWorldPosition;
 
+                    int order = ((13 - (12 - (dupChar.positionInt.y))) * 10) + (12 - (dupChar.positionInt.x));
+                    dupChar.GetComponent<SpriteRenderer>().sortingOrder = order;
+
+                    if(dupChar.modo == 0)
+                    {
+                        if(dupChar.status == 2)
+                        {
+                            dupChar.GetComponent<SpriteRenderer>().sortingOrder += 3;
+                        } else 
+                        {
+                            dupChar.GetComponent<SpriteRenderer>().sortingOrder += 1;
+                        }
+                    }
+
                     dupPlayer.Add(dupChar);
 
                     if (dupChar.status == 2)
@@ -318,6 +332,9 @@ public class GridCreation : MonoBehaviour
 
                     Vector3 playerWorldPosition = campoPropio.GetCellCenterWorld(targetGridPos);
                     characterObj.transform.position = playerWorldPosition;
+
+                    int order = ((12 - (12 - (dupChar.positionInt.y))) * 10) + ((dupChar.positionInt.x) - 12);
+                    dupChar.GetComponent<SpriteRenderer>().sortingOrder = order;
 
                     dupEnemy.Add(dupChar);
 
