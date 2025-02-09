@@ -88,7 +88,7 @@ public class OverTile : MonoBehaviour
 
         if (gameController.charSelection == 1)
         {
-             
+            
             List<CharInfo> characInColumn = gridCreation.posPlayer
                 .Where(c => c.positionInt.y == gridPos.y)
                 .OrderBy(c => c.positionInt.x)
@@ -114,6 +114,7 @@ public class OverTile : MonoBehaviour
 
                 selected.HideTile(selectedTile);     
             }
+
         }
         if (tileSelected == 0)
         {
@@ -122,13 +123,14 @@ public class OverTile : MonoBehaviour
             
             //------Cuadro de selected dorado (se colorea la casilla del ultimo character de la fila, de esa manera se entiende cual va a ser el que se mueva cuando cliques)
 
+
             List<CharInfo> characInColumn = gridCreation.posPlayer
                 .Where(c => c.positionInt.y == gridPos.y)
                 .OrderBy(c => c.positionInt.x)
                 .ToList();
 
             if(characInColumn.Count > 0)
-            {
+           {
                 mousePos = characInColumn[0].transform.position;
                 mousePos.z = 1;
 

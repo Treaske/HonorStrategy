@@ -4,8 +4,27 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
 
+
+
+
 public class InitialPosition : MonoBehaviour
-{
+{ 
+/*
+    [SerializeField] GameObject characterPlayer;
+    [SerializeField] GameObject characterEnemy;
+    [SerializeField] int totalSoldiers = 20;  // Cambia este valor al número deseado de soldados
+    public Sprite[] wallSprite;
+    public OverTile overTile;
+    public SelectedTile selectTile;
+    public CharacMovements playerMov;
+    public List<CharInfo> posPlayer = new List<CharInfo>();
+    public List<CharInfo> posEnemy = new List<CharInfo>();
+
+    //[SerializeField] Tilemap dupPlayer;
+    public List<CharInfo> dupPlayer = new List<CharInfo>();
+    public List<CharInfo> dupEnemy = new List<CharInfo>();
+*/
+
     public void HandleNewPositionsPlayer(List<CharInfo> posicionesOcupadas, Sprite[] wallSprite)
     {
         //recorre todas las posiciones

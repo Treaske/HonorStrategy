@@ -19,25 +19,24 @@ public class GameController : MonoBehaviour
     public TMP_Text textoMovimientos;
     public int textTurn;
 
-
     void Start()
     {
         //Crear Campo
         gridCreation.GenerateGrid();
 
         //Crear ejercitos
-        gridCreation.GenerateCharactersPlayer();
-        gridCreation.GenerateCharactersEnemy();
+        //gridCreation.GenerateCharactersPlayer();
+        //gridCreation.GenerateCharactersEnemy();
         
         //Comprobar posiciones iniciales
-        gridCreation.HandleNewPositions();
+        //gridCreation.HandleNewPositions();
 
         //Crear campo dado la vuelta
-        gridCreation.DuplicateGrid();
+        //gridCreation.DuplicateGrid();
 
         //Generar ejercitos dados la vuelta
-        gridCreation.CharacPlayerDup();
-        gridCreation.CharacEnemyDup();
+        //gridCreation.CharacPlayerDup();
+        //gridCreation.CharacEnemyDup();
 
         textTurn = 0;
 
@@ -106,6 +105,8 @@ public class GameController : MonoBehaviour
 
                 //buscar manera de que seleccione los dos characters, tanto el de la vista del jugador como la del rival
                 //mover todo este codigo a un script a parte donde  se maneje todo el movimiento de los personajes
+
+                
 
                 if((targetGridPos.y != selectedCharacter.positionInt.y) && tilemap.HasTile(targetGridPos))
                 {

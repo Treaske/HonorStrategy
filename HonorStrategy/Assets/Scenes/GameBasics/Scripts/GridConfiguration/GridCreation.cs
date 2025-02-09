@@ -5,33 +5,87 @@ using UnityEngine.Tilemaps;
 using System.Linq;
 
 public class GridCreation : MonoBehaviour
-{
+{ 
     public InitialPosition initialPosition;
-    [SerializeField] Tilemap campoPropio;
-    [SerializeField] Tilemap campoRival;
-    [SerializeField] Tile[] tiles;
-    [SerializeField] GameObject characterPlayer;
-    [SerializeField] GameObject characterEnemy;
-    [SerializeField] int totalSoldiers = 20;  // Cambia este valor al número deseado de soldados
-    public Sprite[] wallSprite;
-    public OverTile overTile;
-    public SelectedTile selectTile;
-    
-
     public List<CharInfo> posPlayer = new List<CharInfo>();
-    public List<CharInfo> posEnemy = new List<CharInfo>();
+    public int gridWidth = 10;
+    public int gridHeight = 10;
+    public Tilemap campoPropio;
+    public TileBase[] tiles;
+    public GameObject overTile;
+    public GameObject selectTile;
+    public Camera mainCamera;
 
-    //[SerializeField] Tilemap dupPlayer;
-    public List<CharInfo> dupPlayer = new List<CharInfo>();
-    public List<CharInfo> dupEnemy = new List<CharInfo>();
+// Movimiento de camara con las teclas y con raton
+    void Awake()
+    {
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
+    }
+    public float minSize = 1f;
+    public float maxSize = 10f;
+    public float maxY = 15f;
+    public float minY = 0f;
+    public float maxX = 15f;
+    public float minX = -15f;
+    public float panSpeed = 0.1f;
+    public float scrollSpeed = 1f;
 
-    static public int gridHeight = 12;
+    void Update()
+    {
+        // Cambiar el campo de visión con las teclas + y -
+        if (Input.GetKey(KeyCode.Equals) && mainCamera.orthographicSize <= 10)
+        {
+            mainCamera.orthographicSize  += 0.0035f;
+        }
+        if (Input.GetKey(KeyCode.Minus) && mainCamera.orthographicSize >= 2)
+        { 
+            mainCamera.orthographicSize  -= 0.0035f;
+        }
+
+        // Zoom con la rueda del ratón
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize - scroll * scrollSpeed, minSize, maxSize);
+
+
+        // Mover la cámara con las flechas
+        float moveSpeed = 3f * Time.deltaTime;
+        if (Input.GetKey(KeyCode.UpArrow) && mainCamera.transform.position.y <= maxY)
+        {
+            mainCamera.transform.position += new Vector3(0, 1, 0) * moveSpeed;
+        }
+        if (Input.GetKey(KeyCode.DownArrow) && mainCamera.transform.position.y >= minY)
+        {
+            mainCamera.transform.position += new Vector3(0, -1, 0) * moveSpeed;
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) && mainCamera.transform.position.x >= minX)
+        {
+            mainCamera.transform.position += new Vector3(-1, 0, 0) * moveSpeed;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) && mainCamera.transform.position.x <= maxX)
+        {
+            mainCamera.transform.position += new Vector3(1, 0, 0) * moveSpeed;
+        }
+
+        // Mover la cámara con el ratón (pan)
+        if (Input.GetMouseButton(2)) // Botón del medio del ratón
+        {
+            float moveX = -Input.GetAxis("Mouse X") * panSpeed;
+            float moveY = -Input.GetAxis("Mouse Y") * panSpeed;
+            
+            Vector3 newPosition = mainCamera.transform.position + new Vector3(moveX, moveY, 0);
+            newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+            newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
+            mainCamera.transform.position = newPosition;
+        }
+    }
 
     public void GenerateGrid()
     {
-        // creacion de dos grids de 12 de ancho y largo, con la creacion de una linea para separarlos
-
-        for (int x = (gridHeight); x > 0; x--)
+        // Creación del primer grid
+        for (int x = 0; x < gridWidth; x++)
         {
             for (int y = 0; y < gridHeight; y++)
             {
@@ -40,67 +94,52 @@ public class GridCreation : MonoBehaviour
             }
         }
 
-        gridHeight += 1;
-
-        for (int y = 0; y < (gridHeight - 1); y++)
-        {   
-            campoPropio.SetTile(new Vector3Int(gridHeight, y, 0), tiles[0]);
+        // Línea de separación
+        for (int y = 0; y < gridHeight; y++)
+        {
+            campoPropio.SetTile(new Vector3Int(gridWidth, y, 0), tiles[0]);
         }
 
-        gridHeight -= 1;
-
-        for (int x = (gridHeight + 2); x < (gridHeight * 2) + 2; x++)
+        // Creación del segundo grid
+        for (int x = gridWidth + 1; x < (gridWidth * 2) + 1; x++)
         {
-            for (int y = 0; y < (gridHeight); y++)
+            for (int y = 0; y < gridHeight; y++)
             {
                 var randomTile = tiles[Random.Range(0, tiles.Length)];
                 campoPropio.SetTile(new Vector3Int(x, y, 0), randomTile);
             }
         }
-       
-        for (int y = 0; y < gridHeight; y++)
+
+        // Creación de overlays y selección
+        for (int x = 0; x < (gridWidth * 2) + 1; x++)
         {
-          
-            for (int x =0; x < ((gridHeight * 2) + 2); x++)
+            for (int y = 0; y < gridHeight; y++)
             {
                 var tileLocation = new Vector3Int(x, y, 0);
-
                 if (campoPropio.HasTile(tileLocation))
-                {                    
+                {
                     var overlayTile = Instantiate(overTile, transform);
                     var cellWorldPosition = campoPropio.GetCellCenterWorld(tileLocation);
-
-                    overlayTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z+1);
+                    overlayTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z + 1);
                     overlayTile.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
                     var selectionTile = Instantiate(selectTile, transform);
-                    cellWorldPosition = campoPropio.GetCellCenterWorld(tileLocation);
-
-                    selectionTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z+1);
+                    selectionTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z + 1);
                     selectionTile.GetComponent<SpriteRenderer>().sortingOrder = 2;
-                    Vector3Int targetPosition = new Vector3Int(x, y, 0);
-                    selectionTile.positionInt = targetPosition;
+                    selectionTile.transform.position = tileLocation;
                 }
             }
         }
     }
 
+/*
+Codigo para crear un segundo campo pero en espejo por si queremos que el jugador siempre se vea en primer lugar
     public void DuplicateGrid()
     {
         for (int y = 0; y < (gridHeight); y++)
         {   
             campoRival.SetTile(new Vector3Int(gridHeight + 1, y + 13, 0), tiles[0]);
         }
-
-
-        //Pruebas para encontrar la posicion de los tiles
-        //campoRival.SetTile(new Vector3Int(13, 13, 0), tiles[0]);
-        //campoPropio.SetTile(new Vector3Int(14, 13, 0), tiles[1]);
-        //campoPropio.SetTile(new Vector3Int(gridHeight, 14, 0), tiles[1]);
-        //var tileRan = new Vector3Int(12, 11, 0);
-        //campoPropio.SetTile(new Vector3Int(x, y, 0), randomTile);
-        //campoRival.SetTile(new Vector3Int(15, 13, 0), campoPropio.GetTile(tileRan));   
-
 
         int apoyoX = 14; //variables para recorrer el tilemap al contrario y asi poder dar la vuelta al grid
         int apoyoY = 11;
@@ -133,8 +172,9 @@ public class GridCreation : MonoBehaviour
             apoyoY = 11;
         }              
     }
-
-
+*/
+}
+    /*
     public void GenerateCharactersPlayer()
     {
         // codigo que genera un numero de de characters, y los reparte de manera aleatoria
@@ -149,12 +189,11 @@ public class GridCreation : MonoBehaviour
             CharInfo playerChar = characterObj.GetComponent<CharInfo>();
             SpriteRenderer spriteRenderer = characterObj.GetComponent<SpriteRenderer>();
 
-            Vector3Int targetGridPos = new Vector3Int(12, aleatorio, 0);
+            //creamos el character en la ultima posicion posible para que avanze hasta que encuentre algo que lo pare
+            Vector3Int targetGridPos = new Vector3Int(1, aleatorio, 0);
 
-            while (posPlayer.Any(c => c.positionInt == targetGridPos))
-            {
-                targetGridPos -= new Vector3Int(1, 0, 0);
-            }
+            //Llamamos al movimiento del personaje y su animacion
+            //playerMov.MoveToPosition();
 
             Vector3 playerWorldPosition = campoPropio.GetCellCenterWorld(targetGridPos);
             characterObj.transform.position = playerWorldPosition;
@@ -356,7 +395,8 @@ public class GridCreation : MonoBehaviour
         initialPosition.HandleNewPositionsPlayer(posPlayer, wallSprite);
         initialPosition.HandleNewPositionsEnemy(posEnemy, wallSprite);
     }
-}
+    */
+
 
 
 /* 
