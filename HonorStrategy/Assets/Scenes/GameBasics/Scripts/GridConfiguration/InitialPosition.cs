@@ -23,7 +23,7 @@ public class InitialPosition : MonoBehaviour
     //[SerializeField] Tilemap dupPlayer;
     public List<CharInfo> dupPlayer = new List<CharInfo>();
     public List<CharInfo> dupEnemy = new List<CharInfo>();
-*/
+
 
     public void HandleNewPositionsPlayer(List<CharInfo> posicionesOcupadas, Sprite[] wallSprite)
     {
@@ -322,4 +322,5 @@ public class InitialPosition : MonoBehaviour
             }   
         }
     }
+    */
 }

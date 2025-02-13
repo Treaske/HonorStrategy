@@ -7,7 +7,7 @@ public class CharacMovements : MonoBehaviour
     public Vector3Int startGridPos = new Vector3Int(1, 0, 0); // Posición inicial
     public float moveSpeed = 2f; // Velocidad de movimiento entre posiciones
     public Animator animator; // Referencia al Animator del personaje
-    public List<CharInfo> posPlayer = new List<CharInfo>(); // Lista de posiciones ocupadas por otros personajes
+    //public List<CharInfo> posPlayer = new List<CharInfo>(); // Lista de posiciones ocupadas por otros personajes
     
     /*
     public void StartMoving() // Método público para iniciar el movimiento

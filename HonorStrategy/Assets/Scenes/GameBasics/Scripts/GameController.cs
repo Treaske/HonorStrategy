@@ -9,15 +9,18 @@ public class GameController : MonoBehaviour
 {    
     [SerializeField] Tilemap tilemap;
     public GridCreation gridCreation;
-    static public int turnosPartida = 5;
-    public CharInfo selectedCharacter;
-    public SelectedTile selected;
-    public OverTile selectedOver;
-    OverTile overTiles;
-    public int charSelection = 0;
+    public ArmyConfig armyConfig;
+    public int nSoldier = 20;
+    [SerializeField] GameObject characterPlayer;
+    //public OverTile selectedOver;
+    //OverTile overTiles;
+    static public int turnosPartida = 5;   
     public TMP_Text textoTurno;
     public TMP_Text textoMovimientos;
     public int textTurn;
+    //public CharInfo selectedCharacter;
+    //public SelectedTile selected;
+    //static public int charSelection = 0;
 
     void Start()
     {
@@ -25,6 +28,7 @@ public class GameController : MonoBehaviour
         gridCreation.GenerateGrid();
 
         //Crear ejercitos
+        armyConfig.GenerateArmy(gridCreation.gridWidth, gridCreation.gridHeight, nSoldier, gridCreation.campoPropio);
         //gridCreation.GenerateCharactersPlayer();
         //gridCreation.GenerateCharactersEnemy();
         
@@ -48,6 +52,8 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
+
+/*
         HandleCharacterSelection();
         //Codigo para los turnos
         if(turnosPartida != 0 && selectedCharacter)
@@ -58,8 +64,10 @@ public class GameController : MonoBehaviour
             textoMovimientos.text = "Movimientos: " + turnosPartida;
             textoTurno.text = "Turno: " + textTurn;
         } 
+*/
     }
 
+/*
     void HandleCharacterSelection()
     {
         if (Input.GetMouseButtonDown(0) && charSelection == 0)
@@ -87,7 +95,8 @@ public class GameController : MonoBehaviour
                 overTiles.tileSelected = 1;    
                 charSelection = 1; 
 
-                selectedOver.ShowTileOver(overTiles);
+                //selectedOver.ShowTileOver(overTiles);
+        
             }
         }
         
@@ -168,13 +177,13 @@ public class GameController : MonoBehaviour
 
                         //Borrar el selectedTile pintado 
 
-                        overTiles.tileSelected = 0;    
+                        //overTiles.tileSelected = 0;    
                     } 
-                    selectedOver.HideTileOver(overTiles);
+                    //selectedOver.HideTileOver(overTiles);
                     charSelection = 0;
   
                 }
             }
         }
-    }
+    }*/
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class CharInfo : MonoBehaviour
+public class CharManager : MonoBehaviour
 {
     public Vector3Int positionInt;
     public int colorInt;
@@ -20,7 +20,7 @@ public class CharInfo : MonoBehaviour
     public Sprite[] atackSprite;
 
 
-    void Start()
+    public void Start()
     {
         if(colorInt <= 2)
         {
@@ -40,6 +40,7 @@ public class CharInfo : MonoBehaviour
         stage = stag;
     }
 
+/*
     public void CheckNewPosition(List<CharInfo> posicionesOcupadas, CharInfo selectedCharacter)
     {
         if (Input.GetMouseButtonDown(1))
@@ -260,4 +261,5 @@ public class CharInfo : MonoBehaviour
         }
 
     }
+    */
 }
