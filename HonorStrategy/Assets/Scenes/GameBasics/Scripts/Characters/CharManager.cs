@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Tilemaps;
 
 public class CharManager : MonoBehaviour
 {
+    public ArmyConfig armyConfig;
+    public GridCreation gridCreation;
+    private GameObject selectedSoldier = null;
+    //public Tilemap campoPropio;
     public Vector3Int positionInt;
     public int colorInt;
     public int health;
@@ -28,6 +33,24 @@ public class CharManager : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0)) // Click izquierdo
+        {
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int tilePosition = gridCreation.campoPropio.WorldToCell(mouseWorldPos);
+
+            if (selectedSoldier == null)
+            {
+                SelectSoldier(tilePosition);
+            }
+            else
+            {
+                MoveSoldier(tilePosition);
+            }
+        }
+    }
+
 
     public void Personaje(Vector3Int pos, int col, int hea, int dam, int mod, int stat, int stag)
     {
@@ -38,6 +61,24 @@ public class CharManager : MonoBehaviour
         modo = mod;
         status = stat;
         stage = stag;
+    }
+
+        void SelectSoldier(Vector3Int tilePosition)
+    {
+        Collider2D hitCollider = Physics2D.OverlapPoint(gridCreation.campoPropio.GetCellCenterWorld(tilePosition));
+        if (hitCollider != null && hitCollider.CompareTag("Soldier"))
+        {
+            selectedSoldier = hitCollider.gameObject;
+        }
+    }
+
+    void MoveSoldier(Vector3Int tilePosition)
+    {
+        if (gridCreation.campoPropio.HasTile(tilePosition) && !armyConfig.occupiedPositions.Contains(tilePosition))
+        {
+            selectedSoldier.transform.position = gridCreation.campoPropio.GetCellCenterWorld(tilePosition);
+            selectedSoldier = null;
+        }
     }
 
 /*

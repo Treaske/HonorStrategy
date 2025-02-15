@@ -24,14 +24,14 @@ public class GridCreation : MonoBehaviour
             mainCamera = Camera.main;
         }
     }
-    public float minSize = 1f;
-    public float maxSize = 10f;
-    public float maxY = 15f;
-    public float minY = 0f;
-    public float maxX = 15f;
-    public float minX = -15f;
-    public float panSpeed = 0.1f;
-    public float scrollSpeed = 1f;
+    static float minSize = 1f;
+    static float maxSize = 10f;
+    static float maxY = 15f;
+    static float minY = 0f;
+    static float maxX = 15f;
+    static float minX = -15f;
+    static float panSpeed = 0.1f;
+    static float scrollSpeed = 1f;
 
     void Update()
     {
